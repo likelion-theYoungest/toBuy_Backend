@@ -53,6 +53,14 @@ INSTALLED_APPS = [
     'allauth.account',
     'rest_auth.registration',
 ]
+SITE_ID = 1
+
+REST_FRAMEWORK = {
+	'DEFAULT_AUTHENTICATION_CLASSES': [
+    'rest_framework.authentication.TokenAuthentication', 
+    ],
+}
+
 
 SITE_ID = 1 #django sites app setting
 
@@ -141,3 +149,4 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'accounts.User' #account.User
