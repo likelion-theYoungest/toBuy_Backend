@@ -1,4 +1,6 @@
+#import uuid
 from django.db import models
+from accounts.models import *
 from django.urls import reverse
 
 CATEGORIES = (
@@ -55,7 +57,9 @@ class Card(models.Model) :
     cvc = models.CharField(verbose_name="카드 cvc", max_length=3) 
     validDate = models.DateField(verbose_name="유효기간", auto_now_add=True)
     pw = models.CharField(verbose_name="카드 비밀번호", max_length=4)
-    # customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    #card_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    #card_id = models.AutoField(primary_key=True)
     balance = models.IntegerField(verbose_name="카드 잔액", default=500000)
     register = models.BooleanField(verbose_name="간편 결제 등록 여부", default=False)
     
@@ -63,8 +67,9 @@ class Card(models.Model) :
         return self.num
     
     class Meta:
-        unique_together = ['num']  # num -> unique
-        
+        #unique_together = ['num']  # num -> unique
+        unique_together = ['customer', 'num']  # 한 사용자당 하나의 카드만 유일하도록 설정
+
     def save(self, *args, **kwargs):
         # save 메서드를 오버라이드하여 validDate를 업데이트하지 못하도록 설정합니다.
         if not self.pk:  # 새로운 인스턴스인지 확인합니다.
