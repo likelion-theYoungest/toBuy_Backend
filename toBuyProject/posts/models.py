@@ -1,4 +1,6 @@
+#import uuid
 from django.db import models
+from accounts.models import *
 from django.urls import reverse
 from accounts.models import User
 
@@ -65,8 +67,9 @@ class Card(models.Model) :
         return self.num
     
     class Meta:
-        unique_together = ['num']  # num -> unique
-        
+        #unique_together = ['num']  # num -> unique
+        unique_together = ['customer', 'num']  # 한 사용자당 하나의 카드만 유일하도록 설정
+
     def save(self, *args, **kwargs):
         # save 메서드를 오버라이드하여 validDate를 업데이트하지 못하도록 설정합니다.
         if not self.pk:  # 새로운 인스턴스인지 확인합니다.
