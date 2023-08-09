@@ -1,0 +1,265 @@
+[
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "clo1",
+      "image": "products/clo/clo1.png",
+      "name": "여성 릴렉스 핏 폴로 셔츠",
+      "price": 28900,
+      "category": "cate1"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "clo2",
+      "image": "products/clo/clo2.png",
+      "name": "일자 냉장고 바지 여름 데일리 ",
+      "price": 14900,
+      "category": "cate1"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "clo3",
+      "image": "products/clo/clo3.png",
+      "name": "러너타임 운동화 그레이컬러",
+      "price": 47900,
+      "category": "cate1"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "clo4",
+      "image": "products/clo/clo4.png",
+      "name": "남성용 집업 니트 베이지",
+      "price": 26300,
+      "category": "cate1"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "by1",
+      "image": "products/by/by1.png",
+      "name": "UVA UVB SPF 30 밀키 선크림",
+      "price": 23600,
+      "category": "cate2"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "by2",
+      "image": "products/by/by2.png",
+      "name": "코코넛 보습 바디 로션 1+1",
+      "price": 20180,
+      "category": "cate2"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "by3",
+      "image": "products/by/by3.png",
+      "name": "잇츠 비건 폼클렌징",
+      "price": 19900,
+      "category": "cate2"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "by4",
+      "image": "products/by/by4.png",
+      "name": "포 마이 스킨 스킨케어 세트",
+      "price": 42600,
+      "category": "cate2"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "fd1",
+      "image": "products/fd/fd1.png",
+      "name": "국산 풍천 장어 1kg",
+      "price": 21900,
+      "category": "cate3"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "fd2",
+      "image": "products/fd/fd2.png",
+      "name": "강원도 인제 산지직송 복숭아 4kg",
+      "price": 36900,
+      "category": "cate3"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "fd3",
+      "image": "products/fd/fd3.png",
+      "name": "유기농 국내산 양배추즙 100ml x 30개입",
+      "price": 19900,
+      "category": "cate3"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "fd4",
+      "image": "products/fd/fd4.png",
+      "name": "완도 미역 200g",
+      "price": 3300,
+      "category": "cate3"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "pr1",
+      "image": "products/pr/pr1.png",
+      "name": "천연 코튼 펄프 2겹 두루마리 휴지 24롤",
+      "price": 13900,
+      "category": "cate4"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "pr2",
+      "image": "products/pr/pr2.png",
+      "name": "엑츠 프레시 베이킹소다 일반 / 드럼용 세제 1L",
+      "price": 8690,
+      "category": "cate4"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "pr3",
+      "image": "products/pr/pr3.png",
+      "name": "오드리선 더블코어 생리대 중형 10개입x3",
+      "price": 23100,
+      "category": "cate4"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "pr4",
+      "image": "products/pr/pr4.png",
+      "name": "주방용 버블버블 스폰지밥 스펀지 ",
+      "price": 2900,
+      "category": "cate4"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "hm1",
+      "image": "products/hm/hm1.png",
+      "name": "사자네 원목 원형 테이블",
+      "price": 30190,
+      "category": "cate5"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "hm2",
+      "image": "products/hm/hm2.png",
+      "name": "[Lion’s] 미니 LED 램프",
+      "price": 28900,
+      "category": "cate5"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "hm3",
+      "image": "products/hm/hm3.png",
+      "name": "쉼 가구 1인용 패브릭 쇼파",
+      "price": 138790,
+      "category": "cate5"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "hm4",
+      "image": "products/hm/hm4.png",
+      "name": "폴 인 러그 여름용 러그",
+      "price": 12800,
+      "category": "cate5"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "ht1",
+      "image": "products/ht/ht1.png",
+      "name": "새부리형 마스크 20매 ",
+      "price": 27900,
+      "category": "cate6"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "ht2",
+      "image": "products/ht/ht2.png",
+      "name": "푸른 바다 고등어 오메가3",
+      "price": 42800,
+      "category": "cate6"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "ht3",
+      "image": "products/ht/ht3.png",
+      "name": "세븐데이 일상습관 약통 ",
+      "price": 4600,
+      "category": "cate6"
+    }
+  },
+
+  {
+    "model": "posts.products",
+    "fields": {
+      "product_id": "ht4",
+      "image": "products/ht/ht4.png",
+      "name": "레인보우 비타민 30캡슐 ",
+      "price": 39900,
+      "category": "cate6"
+    }
+  }
+]
