@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
-from .models import Products, Purchase
-from .serializers import ProductSerializer, PurchaseSerializer
+from .models import Products, Purchase, Card
+from .serializers import ProductSerializer, PurchaseSerializer, CardSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from .permissions import ReadOnly
+from rest_framework import viewsets, permissions, status
+import random
+import string
 
 class ProductViewSet(ModelViewSet) :
     queryset = Products.objects.all()
@@ -43,3 +46,30 @@ class ProductViewSet(ModelViewSet) :
             'category' : product.category,
         }
         return Response(data)
+
+class CardPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if view.action == 'create':
+            return request.user.is_authenticated
+        return True
+    
+class CardViewSet(viewsets.ModelViewSet):
+    queryset = Card.objects.all()
+    serializer_class = CardSerializer
+    permission_classes = [CardPermission]
+
+    def create(self, request, *args, **kwargs):
+        num = ''.join(random.choices(string.digits, k=16))
+        cvc = ''.join(random.choices(string.digits, k=3))
+        pw = ''.join(random.choices(string.digits, k=4))
+
+        serializer = self.get_serializer(data={
+            'num': num,
+            'cvc': cvc,
+            'pw': pw,
+            'customer': request.user.id  # 또는 적절한 user 식별자
+        })
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        
+        return Response({"message": "Card created successfully"}, status=status.HTTP_201_CREATED)

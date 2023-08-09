@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 
 #회원가입 중복확인_최종
 class UserRegistration(APIView):
