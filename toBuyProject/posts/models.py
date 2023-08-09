@@ -2,6 +2,8 @@
 from django.db import models
 from accounts.models import *
 from django.urls import reverse
+from accounts.models import User
+
 
 CATEGORIES = (
     ('cate1', '패션의류/잡화'),
@@ -40,7 +42,7 @@ class Purchase(models.Model) :
     category = models.CharField(verbose_name="카테고리명", choices=CATEGORIES, default='cate1', max_length=20)
     count = models.IntegerField(verbose_name="구매 제품 개수", default=0)
     total = models.IntegerField(verbose_name="총 가격", default=0) # price * count
-    # customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     date = models.DateTimeField(verbose_name="구매 날짜와 시각", auto_now_add=True)
     purchase_type = models.CharField(verbose_name="결제 방식", choices=TYPES, default='type1', max_length=20)
@@ -58,8 +60,6 @@ class Card(models.Model) :
     validDate = models.DateField(verbose_name="유효기간", auto_now_add=True)
     pw = models.CharField(verbose_name="카드 비밀번호", max_length=4)
     customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    #card_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    #card_id = models.AutoField(primary_key=True)
     balance = models.IntegerField(verbose_name="카드 잔액", default=500000)
     register = models.BooleanField(verbose_name="간편 결제 등록 여부", default=False)
     
