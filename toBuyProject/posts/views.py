@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from .models import Products, Purchase, Card
 from .serializers import ProductSerializer, PurchaseSerializer, CardSerializer
@@ -73,3 +72,9 @@ class CardViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         
         return Response({"message": "Card created successfully"}, status=status.HTTP_201_CREATED)
+
+    
+# Purchase 
+class PurchaseViewSet(ModelViewSet) :
+    queryset = Purchase.objects.all()
+    serializer_class = PurchaseSerializer

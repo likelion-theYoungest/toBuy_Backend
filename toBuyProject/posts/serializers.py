@@ -9,7 +9,7 @@ class ProductSerializer(ModelSerializer) :
         fields = '__all__'
 
 class PurchaseSerializer(ModelSerializer) :
-    customer = ReadOnlyField(source='customer.username')
+    customer = ReadOnlyField(source='customer.id')
     
     class Meta:
         model = Purchase
