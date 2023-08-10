@@ -14,7 +14,7 @@ class PurchaseSerializer(ModelSerializer) :
     class Meta:
         model = Purchase
         fields = '__all__'
-        # read_only_fields
+        read_only_fields = ('image', 'name', 'price', 'category', 'total')
         
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
