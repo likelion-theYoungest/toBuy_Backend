@@ -4,7 +4,6 @@ from accounts.models import *
 from django.urls import reverse
 from accounts.models import User
 
-
 CATEGORIES = (
     ('cate1', '패션의류/잡화'),
     ('cate2', '뷰티'),
