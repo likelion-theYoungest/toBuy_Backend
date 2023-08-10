@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_auth.registration',
+    
+    'django_filters', # django-filter 등록
 ]
 SITE_ID = 1
 
