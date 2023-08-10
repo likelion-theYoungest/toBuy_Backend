@@ -19,7 +19,7 @@ TYPES = (
 )
 
 class Products(models.Model) :
-    product_id = models.CharField(verbose_name="커스텀 ID", max_length=10)
+    product_id = models.CharField(verbose_name="커스텀 ID", primary_key=True, max_length=10)
     image = models.ImageField(verbose_name='제품 이미지', blank=True, null=True, upload_to='post-image')
     name = models.CharField(verbose_name="제품 이름", max_length=128)
     price = models.IntegerField(verbose_name="제품 가격", default=0)
@@ -39,12 +39,13 @@ class Purchase(models.Model) :
     name = models.CharField(verbose_name="구매 제품 이름", max_length=128)
     price = models.IntegerField(verbose_name="구매 제품 가격", default=0)
     category = models.CharField(verbose_name="카테고리명", choices=CATEGORIES, default='cate1', max_length=20)
-    count = models.IntegerField(verbose_name="구매 제품 개수", default=0)
+    count = models.IntegerField(verbose_name="구매 제품 개수", default=1)
     total = models.IntegerField(verbose_name="총 가격", default=0) # price * count
     customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, to_field='product_id')
     date = models.DateTimeField(verbose_name="구매 날짜와 시각", auto_now_add=True)
     purchase_type = models.CharField(verbose_name="결제 방식", choices=TYPES, default='type1', max_length=20)
+    register = models.BooleanField(verbose_name="간편 결제 등록 여부", default=False)
     
     def save(self, *args, **kwargs):
         self.total = self.price * self.count
@@ -60,7 +61,6 @@ class Card(models.Model) :
     pw = models.CharField(verbose_name="카드 비밀번호", max_length=4)
     customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     balance = models.IntegerField(verbose_name="카드 잔액", default=500000)
-    register = models.BooleanField(verbose_name="간편 결제 등록 여부", default=False)
     
     def __str__(self):
         return self.num
