@@ -144,11 +144,7 @@ class PurchaseViewSet(ModelViewSet):
 
 
 # 마이페이지
-# 카드 부분 정보 가져오는 코드는 써놨어요 ! 근데 지금 우선 회원가입을 하자마자 -> 카드 생성 ! 이 작업이 안되서 아직 카드를 못 불러오네요 ㅜㅜ
-# 그 부분 되면 주석 풀고 /mypage/ 실행 했을 때 나오는지 확인 후 api 명세서 수정부탁해요 !! 
 class UserProfileCardPurchasesView(APIView):
-    # permission_classes = [CardPermission]
-
     def get(self, request):
         if not request.user.is_authenticated:
             return Response({"message": "로그인을 해주세요."}, status=status.HTTP_401_UNAUTHORIZED)
@@ -162,15 +158,15 @@ class UserProfileCardPurchasesView(APIView):
             'phone': user.phone,
         }
 
-        # cards = Card.objects.filter(customer=user)
-        # card_serializer = CardSerializer(cards, many=True)
+        cards = Card.objects.filter(customer=user)
+        card_serializer = CardSerializer(cards, many=True)
 
         purchases = Purchase.objects.filter(customer=user)
         purchase_serializer = PurchaseSerializer(purchases, many=True)
 
         data = {
             'profile': profile_data,
-            # 'card': card_serializer.data,
+            'card': card_serializer.data,
             'purchases': purchase_serializer.data,
         }
 
