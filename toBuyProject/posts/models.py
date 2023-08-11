@@ -34,26 +34,6 @@ class Products(models.Model) :
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'product_id': self.product_id})
 
-class Purchase(models.Model) :
-    image = models.ImageField(verbose_name='구매 제품 이미지', blank=True, null=True, upload_to='post-image')
-    name = models.CharField(verbose_name="구매 제품 이름", max_length=128)
-    price = models.IntegerField(verbose_name="구매 제품 가격", default=0)
-    category = models.CharField(verbose_name="카테고리명", choices=CATEGORIES, default='cate1', max_length=20)
-    count = models.IntegerField(verbose_name="구매 제품 개수", default=1)
-    total = models.IntegerField(verbose_name="총 가격", default=0) # price * count
-    customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    product = models.ForeignKey(Products, on_delete=models.CASCADE, to_field='product_id')
-    date = models.DateTimeField(verbose_name="구매 날짜와 시각", auto_now_add=True)
-    purchase_type = models.CharField(verbose_name="결제 방식", choices=TYPES, default='type1', max_length=20)
-    register = models.BooleanField(verbose_name="간편 결제 등록 여부", default=False)
-    
-    def save(self, *args, **kwargs):
-        self.total = self.price * self.count
-        super(Purchase, self).save(*args, **kwargs)
-    
-    def __str__(self):
-        return self.name
-
 class Card(models.Model) :
     num = models.CharField(verbose_name="카드 번호", max_length=16) 
     cvc = models.CharField(verbose_name="카드 cvc", max_length=3) 
@@ -74,22 +54,47 @@ class Card(models.Model) :
         if not self.pk:  # 새로운 인스턴스인지 확인합니다.
             self.validDate = "2023-08-18"  # 고정된 날짜를 "YYYY-MM-DD" 형식의 문자열로 설정합니다.
         super(Card, self).save(*args, **kwargs)
+
+class Purchase(models.Model) :
+    image = models.ImageField(verbose_name='구매 제품 이미지', blank=True, null=True, upload_to='post-image')
+    name = models.CharField(verbose_name="구매 제품 이름", max_length=128)
+    price = models.IntegerField(verbose_name="구매 제품 가격", default=0)
+    category = models.CharField(verbose_name="카테고리명", choices=CATEGORIES, default='cate1', max_length=20)
+    count = models.IntegerField(verbose_name="구매 제품 개수", default=1)
+    total = models.IntegerField(verbose_name="총 가격", default=0) # price * count
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, to_field='product_id')
+    date = models.DateTimeField(verbose_name="구매 날짜와 시각", auto_now_add=True)
+    purchase_type = models.CharField(verbose_name="결제 방식", choices=TYPES, default='type1', max_length=20)
+    register = models.BooleanField(verbose_name="간편 결제 등록 여부", default=False)
+    card = models.ForeignKey(Card, on_delete=models.CASCADE, null=True) # 카드 정보 type1 일 때만 받아오기 
+    
+    def save(self, *args, **kwargs):
+        self.total = self.price * self.count
+        super(Purchase, self).save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.name
         
 class RecentSearch(models.Model):
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)  # 사용자와 연결
     query = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    MAX_RECENT_SEARCHES = 5  # 최대 유지할 검색어 개수
+    MAX_RECENT_SEARCHES = 5  # 각 사용자별로 최대 유지할 검색어 개수
 
     class Meta:
         ordering = ['-created_at']
 
     @classmethod
-    def add_search(cls, query):
+    def add_search(cls, user, query):  # 사용자 정보를 추가로 받도록 수정
         if query:
-            recent_search = cls(query=query)
-            recent_search.save()
+            # 해당 사용자의 검색어 개수 확인
+            recent_searches_count = cls.objects.filter(customer=user).count()
 
-            # 최대 개수 초과 시 오래된 검색어 삭제
-            if cls.objects.count() > cls.MAX_RECENT_SEARCHES:
-                cls.objects.earliest('created_at').delete()
+            # 최대 개수 초과 시 오래된 검색어 삭제 후 추가
+            if recent_searches_count >= cls.MAX_RECENT_SEARCHES:
+                cls.objects.filter(customer=user).earliest('created_at').delete()
+
+            recent_search = cls(customer=user, query=query)
+            recent_search.save()
