@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
-from .models import Products, Purchase, Card
+from .models import Products, Purchase, Card, RecentSearch
 from .serializers import ProductSerializer, PurchaseSerializer, CardSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
@@ -20,17 +20,20 @@ class ProductViewSet(ModelViewSet) :
     filter_backends = [SearchFilter]
     search_fields = ['name']
     
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.recent_searches = []  # 검색어를 저장할 배열
-
+    # 최근 검색어 저장
     def add_to_recent_searches(self, query):
-        if query :
-            self.recent_searches.insert(0, query)
-            if len(self.recent_searches) > 5:
-                self.recent_searches.pop()
+        RecentSearch.add_search(query)
+        recent_searches = RecentSearch.objects.order_by('-created_at')[:RecentSearch.MAX_RECENT_SEARCHES]
+        self.recent_searches = [search.query for search in recent_searches]
+    
+    # 최근 검색어 반환         
+    @action(detail=False, methods=['get'])
+    def recent_searches_list(self, request):
+        recent_searches = RecentSearch.objects.order_by('-created_at')[:5]
+        searches = [search.query for search in recent_searches]
+        return Response(searches, status=status.HTTP_200_OK)
 
-    # 검색 결과에 접근할 때마다 검색어를 배열에 추가
+    # 검색어 -> 함수로 넘겨줌 
     def list(self, request, *args, **kwargs):
         search_query = self.request.query_params.get('search', None)
         self.add_to_recent_searches(search_query)
@@ -55,10 +58,7 @@ class ProductViewSet(ModelViewSet) :
             'category' : product.category,
         }
         return Response(data)
-    
-    @action(detail=False, methods=['get'])
-    def recent_searches_list(self, request):
-        return Response(self.recent_searches)
+
 
 # main -> 카테고리 별 두 개씩 가져오는 부분
 class MainProductListView(APIView):
