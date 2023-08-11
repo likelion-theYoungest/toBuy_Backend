@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from .permissions import ReadOnly
 from rest_framework import viewsets, permissions, status
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import ValidationError
 from rest_framework.filters import SearchFilter
 import random
 import string
@@ -39,6 +41,9 @@ class ProductViewSet(ModelViewSet) :
 
     # 검색어 -> 함수로 넘겨줌
     def list(self, request, *args, **kwargs):
+        if not request.user.is_authenticated :
+            return Response({"message" : "로그인을 해주세요."}, status=status.HTTP_401_UNAUTHORIZED)
+        
         search_query = self.request.query_params.get('search', None)
         self.add_to_recent_searches(request.user, search_query)
         return super().list(request, *args, **kwargs)
@@ -98,10 +103,19 @@ class CardViewSet(viewsets.ModelViewSet):
             'pw': pw,
             'customer': request.user.id,  # 또는 적절한 user 식별자
         })
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
+        
+        try:
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+        except :
+            return Response({"error": "한 사람당 카드는 한 개만 생성 가능합니다."}, status=status.HTTP_400_BAD_REQUEST)
         
         return Response({"message": "Card created successfully"}, status=status.HTTP_201_CREATED)
+    
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            raise PermissionDenied("로그인을 해주세요.")
+        return Card.objects.filter(customer=self.request.user)
 
     
 # Purchase 

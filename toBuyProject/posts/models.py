@@ -3,6 +3,7 @@ from django.db import models
 from accounts.models import *
 from django.urls import reverse
 from accounts.models import User
+from django.core.exceptions import ValidationError
 
 CATEGORIES = (
     ('cate1', '패션의류/잡화'),
@@ -50,10 +51,14 @@ class Card(models.Model) :
         unique_together = ['customer', 'num']  # 한 사용자당 하나의 카드만 유일하도록 설정
 
     def save(self, *args, **kwargs):
-        # save 메서드를 오버라이드하여 validDate를 업데이트하지 못하도록 설정합니다.
-        if not self.pk:  # 새로운 인스턴스인지 확인합니다.
-            self.validDate = "2023-08-18"  # 고정된 날짜를 "YYYY-MM-DD" 형식의 문자열로 설정합니다.
+        if not self.pk:  
+            existing_card = Card.objects.filter(customer=self.customer).first()
+            if existing_card:
+                raise ValidationError("이미 카드가 있습니다.")  # 이미 생성된 카드가 있는 경우 저장하지 않음
+
+            self.validDate = "2023-08-18"
         super(Card, self).save(*args, **kwargs)
+    
 
 class Purchase(models.Model) :
     image = models.ImageField(verbose_name='구매 제품 이미지', blank=True, null=True, upload_to='post-image')
