@@ -74,3 +74,22 @@ class Card(models.Model) :
         if not self.pk:  # 새로운 인스턴스인지 확인합니다.
             self.validDate = "2023-08-18"  # 고정된 날짜를 "YYYY-MM-DD" 형식의 문자열로 설정합니다.
         super(Card, self).save(*args, **kwargs)
+        
+class RecentSearch(models.Model):
+    query = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    MAX_RECENT_SEARCHES = 5  # 최대 유지할 검색어 개수
+
+    class Meta:
+        ordering = ['-created_at']
+
+    @classmethod
+    def add_search(cls, query):
+        if query:
+            recent_search = cls(query=query)
+            recent_search.save()
+
+            # 최대 개수 초과 시 오래된 검색어 삭제
+            if cls.objects.count() > cls.MAX_RECENT_SEARCHES:
+                cls.objects.earliest('created_at').delete()
