@@ -10,6 +10,8 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.filters import SearchFilter
 import random
 import string
+from django.db import transaction
+
 
 class ProductViewSet(ModelViewSet) :
     queryset = Products.objects.all()
@@ -112,9 +114,37 @@ class PurchaseViewSet(ModelViewSet):
         purchase_type = request.data.get('purchase_type')
         custom_product_id = request.data.get('product')
         register = request.data.get('register') # 카드 등록 여부 프론트 한테 받아옵니다 (True, False)
+
         if register == None : 
             register = False # 만약 못 받아오면 우선 -> False가 되도록 !! 
         
+        if purchase_type == "type1":
+            # 구매 유형이 "type1"이고 register가 False인 경우에만 실행
+            card_num = request.data.get('card_num')  # 사용자가 입력한 카드 번호
+            card_cvc = request.data.get('card_cvc')  # 사용자가 입력한 카드 CVC
+            card_pw = request.data.get('card_pw')    # 사용자가 입력한 카드 비밀번호
+            card_valid_date = request.data.get('card_valid_date')  # 사용자가 입력한 카드 유효기간
+
+            matching_cards = Card.objects.filter(
+                customer=request.user,
+                num=card_num,
+                cvc=card_cvc,
+                pw=card_pw,
+                validDate=card_valid_date 
+            )
+
+            if not matching_cards.exists():
+                return Response({"message": "카드 정보가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 카드 정보가 일치하는 경우 카드 잔액 업데이트
+            card = matching_cards.first()
+            if card.balance < total:
+                return Response({"message": "잔액이 부족합니다."}, status=status.HTTP_400_BAD_REQUEST)
+
+            with transaction.atomic():
+                card.balance -= total
+                card.save()
+
         if register == False and purchase_type == "type2" :
             return Response({"message" : "카드가 등록되지 않았습니다."}, status=status.HTTP_400_BAD_REQUEST)
         
