@@ -21,22 +21,26 @@ class ProductViewSet(ModelViewSet) :
     search_fields = ['name']
     
     # 최근 검색어 저장
-    def add_to_recent_searches(self, query):
-        RecentSearch.add_search(query)
-        recent_searches = RecentSearch.objects.order_by('-created_at')[:RecentSearch.MAX_RECENT_SEARCHES]
+    def add_to_recent_searches(self, user, query):
+        RecentSearch.add_search(user, query)
+        recent_searches = RecentSearch.objects.filter(customer=user).order_by('-created_at')[:RecentSearch.MAX_RECENT_SEARCHES]
         self.recent_searches = [search.query for search in recent_searches]
-    
-    # 최근 검색어 반환         
+
+    # 최근 검색어 반환
     @action(detail=False, methods=['get'])
     def recent_searches_list(self, request):
-        recent_searches = RecentSearch.objects.order_by('-created_at')[:5]
+        if not request.user.is_authenticated :
+            return Response({"message" : "로그인을 해주세요."}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        self.add_to_recent_searches(request.user, None)
+        recent_searches = RecentSearch.objects.filter(customer=request.user).order_by('-created_at')[:RecentSearch.MAX_RECENT_SEARCHES]
         searches = [search.query for search in recent_searches]
         return Response(searches, status=status.HTTP_200_OK)
 
-    # 검색어 -> 함수로 넘겨줌 
+    # 검색어 -> 함수로 넘겨줌
     def list(self, request, *args, **kwargs):
         search_query = self.request.query_params.get('search', None)
-        self.add_to_recent_searches(search_query)
+        self.add_to_recent_searches(request.user, search_query)
         return super().list(request, *args, **kwargs)
     
     # products/카테고리명(ex.cate1)/ : 카테고리 별로 출력 
@@ -58,7 +62,6 @@ class ProductViewSet(ModelViewSet) :
             'category' : product.category,
         }
         return Response(data)
-
 
 # main -> 카테고리 별 두 개씩 가져오는 부분
 class MainProductListView(APIView):
