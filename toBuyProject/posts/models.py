@@ -4,6 +4,8 @@ from accounts.models import *
 from django.urls import reverse
 from accounts.models import User
 from django.core.exceptions import ValidationError
+from datetime import datetime
+
 
 CATEGORIES = (
     ('cate1', '패션의류/잡화'),
@@ -38,7 +40,7 @@ class Products(models.Model) :
 class Card(models.Model) :
     num = models.CharField(verbose_name="카드 번호", max_length=16) 
     cvc = models.CharField(verbose_name="카드 cvc", max_length=3) 
-    validDate = models.DateField(verbose_name="유효기간", auto_now_add=True)
+    validDate = models.DateField(verbose_name="유효기간", default=datetime(2024, 8, 1))
     pw = models.CharField(verbose_name="카드 비밀번호", max_length=4)
     customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     balance = models.IntegerField(verbose_name="카드 잔액", default=500000)
@@ -56,7 +58,6 @@ class Card(models.Model) :
             if existing_card:
                 raise ValidationError("이미 카드가 있습니다.")  # 이미 생성된 카드가 있는 경우 저장하지 않음
 
-            self.validDate = "2023-08-18"
         super(Card, self).save(*args, **kwargs)
     
 
