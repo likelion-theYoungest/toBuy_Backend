@@ -108,7 +108,13 @@ class CardViewSet(viewsets.ModelViewSet):
             card.balance += recharge_amount
             card.save()
 
-            return Response({"message": f"Successfully recharged {recharge_amount} to the card + "}, status=status.HTTP_200_OK)
+            response_data = {
+                "message": f"Successfully recharged {recharge_amount} to the card",
+                "card_balance": card.balance,
+                "recharge_amount": recharge_amount
+            }
+
+            return Response(response_data, status=status.HTTP_200_OK)
         except Card.DoesNotExist:
             return Response({"error": "Card not found"}, status=status.HTTP_404_NOT_FOUND)
     
