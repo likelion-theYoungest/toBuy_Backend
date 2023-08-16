@@ -9,6 +9,8 @@ card_router = DefaultRouter()
 card_router.register(r'cards', CardViewSet)  
 purchase_router = DefaultRouter()
 purchase_router.register(r'purchase', PurchaseViewSet)  
+router = DefaultRouter()
+router.register(r'cards', CardViewSet, basename='card')
 
 urlpatterns = [
     path('', include(product_router.urls)),
@@ -21,4 +23,4 @@ urlpatterns = [
     path('products/<str:category>/<str:product_id>/', ProductViewSet.as_view({'get': 'product_detail'}), name='product_detail'),
     path('mypage/', UserProfileCardPurchasesView.as_view(), name='mypage'),
     path('purchase/<int:pk>/get_specific_purchase/', PurchaseViewSet.as_view({'get': 'get_specific_purchase'}), name='get_specific_purchase'),
-]
+]+ router.urls

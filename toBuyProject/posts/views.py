@@ -90,11 +90,28 @@ class CardPermission(permissions.BasePermission):
             return request.user.is_authenticated
         return True
     
+
 class CardViewSet(viewsets.ModelViewSet):
     queryset = Card.objects.all()
     serializer_class = CardSerializer
     permission_classes = [CardPermission]
 
+
+    @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
+    def recharge(self, request):
+        try:
+            user = request.user
+
+            # 일정 금액 충전하기
+            recharge_amount = 3000
+            card = Card.objects.get(customer=user)
+            card.balance += recharge_amount
+            card.save()
+
+            return Response({"message": f"Successfully recharged {recharge_amount} to the card + "}, status=status.HTTP_200_OK)
+        except Card.DoesNotExist:
+            return Response({"error": "Card not found"}, status=status.HTTP_404_NOT_FOUND)
+    
     def create(self, request, *args, **kwargs):
         num = ''.join(random.choices(string.digits, k=16))
         cvc = ''.join(random.choices(string.digits, k=3))
