@@ -20,4 +20,5 @@ urlpatterns = [
     path('products/<str:category>/', ProductViewSet.as_view({'get': 'list_by_category'}), name='product_list_by_category'),
     path('products/<str:category>/<str:product_id>/', ProductViewSet.as_view({'get': 'product_detail'}), name='product_detail'),
     path('mypage/', UserProfileCardPurchasesView.as_view(), name='mypage'),
+    path('purchase/<int:pk>/get_specific_purchase/', PurchaseViewSet.as_view({'get': 'get_specific_purchase'}), name='get_specific_purchase'),
 ]
