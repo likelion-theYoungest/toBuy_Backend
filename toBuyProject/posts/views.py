@@ -10,6 +10,7 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import SearchFilter
+from accounts.models import User
 import random
 import string
 from django.db import transaction
@@ -170,11 +171,12 @@ class PurchaseViewSet(ModelViewSet):
         count = int(request.data.get('count'))
         purchase_type = request.data.get('purchase_type')
         custom_product_id = request.data.get('product')
-        register = request.data.get('register')
+        register = get_object_or_404(User, id=request.user.id)
 
         user_card = get_object_or_404(Card, customer=request.user)
         product = Products.objects.get(product_id=custom_product_id)
         total = int(product.price * count)
+        # user = get_object_or_404(User, id=request.user.id)
 
         if register == None : 
             register = False
@@ -224,15 +226,10 @@ class PurchaseViewSet(ModelViewSet):
                     if (input_num == user_card.num and
                         input_cvc == user_card.cvc and
                         input_pw == user_card.pw):
-                        # try:
-                        #     input_date = datetime.strptime(input_validDate, '%Y-%m')
-                        #     if (input_date.year == user_card.validDate.year and
-                        #         input_date.month == user_card.validDate.month):
-                            register = True
-                        #     else:
-                        #         return Response({"message": "유효 기간이 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
-                        # except ValueError:
-                        #     return Response({"message": "올바른 유효 기간 형식이 아닙니다."}, status=status.HTTP_400_BAD_REQUEST)
+                        user = request.user
+                        user.register = True
+                        user.save()
+
                     else:
                         return Response({"message": "카드 정보가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
                 
