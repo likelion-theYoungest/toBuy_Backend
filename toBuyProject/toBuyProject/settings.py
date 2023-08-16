@@ -68,6 +68,7 @@ REST_FRAMEWORK = {
     'djangorestframework_camel_case.parser.CamelCaseFormParser', 
     'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
     'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+    'rest_framework.parsers.JSONParser',
     ),
 	'DEFAULT_AUTHENTICATION_CLASSES': [
     'rest_framework.authentication.TokenAuthentication', 

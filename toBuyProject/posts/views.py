@@ -140,17 +140,24 @@ class PurchaseViewSet(ModelViewSet):
         if register == None : 
             register = False
 
-
+        # if not request.user.is_authenticated:
+        #     return Response({"message": "로그인을 해주세요."}, status=status.HTTP_401_UNAUTHORIZED)
+    
         if purchase_type == "type1":
             cvc = request.data.get('cvc')
             num = request.data.get('num')
             validDate = request.data.get('validDate')
             pw = request.data.get('pw')
             print("Received validDate:", validDate)  # 출력문 추가
-         
+            # if validDate is None:
+            #     return Response({"message": "유효 기간을 입력해주세요."}, status=status.HTTP_400_BAD_REQUEST)
             if user_card.balance < total:
                 return Response({"message": "잔액 부족"}, status=status.HTTP_400_BAD_REQUEST)
-       
+            
+            # try:
+            #     input_date = datetime.strptime(validDate, '%Y-%m')  # 'YYYY-MM' 형식의 유효 기간 변환
+            # except ValueError:
+            #     return Response({"message": "올바른 유효 기간 형식이 아닙니다."}, status=status.HTTP_400_BAD_REQUEST)
             
             if (cvc != user_card.cvc or
                 num != user_card.num or
@@ -159,9 +166,9 @@ class PurchaseViewSet(ModelViewSet):
                 pw != user_card.pw):
                 return Response({"message": "카드 정보가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-            with transaction.atomic():
-                user_card.balance -= total
-                user_card.save()
+            # with transaction.atomic():
+            #     user_card.balance -= total
+            #     user_card.save()
             
                 
         elif purchase_type == "type2":
@@ -177,17 +184,24 @@ class PurchaseViewSet(ModelViewSet):
                     if (input_num == user_card.num and
                         input_cvc == user_card.cvc and
                         input_pw == user_card.pw):
+                        # try:
+                        #     input_date = datetime.strptime(input_validDate, '%Y-%m')
+                        #     if (input_date.year == user_card.validDate.year and
+                        #         input_date.month == user_card.validDate.month):
                             register = True
-               
+                        #     else:
+                        #         return Response({"message": "유효 기간이 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+                        # except ValueError:
+                        #     return Response({"message": "올바른 유효 기간 형식이 아닙니다."}, status=status.HTTP_400_BAD_REQUEST)
                     else:
                         return Response({"message": "카드 정보가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
                 
                     if user_card.balance < total:
                         return Response({"message": "잔액이 부족합니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-                    # with transaction.atomic():
-                    #     user_card.balance -= total
-                    #     user_card.save()
+                    with transaction.atomic():
+                        user_card.balance -= total
+                        user_card.save()
 
 
                 elif user_input == "no":
