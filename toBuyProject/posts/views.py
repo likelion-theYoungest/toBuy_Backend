@@ -166,9 +166,9 @@ class PurchaseViewSet(ModelViewSet):
                 pw != user_card.pw):
                 return Response({"message": "카드 정보가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-            with transaction.atomic():
-                user_card.balance -= total
-                user_card.save()
+            # with transaction.atomic():
+            #     user_card.balance -= total
+            #     user_card.save()
             
                 
         elif purchase_type == "type2":
