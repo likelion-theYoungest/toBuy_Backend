@@ -127,6 +127,22 @@ class PurchaseViewSet(ModelViewSet):
     queryset = Purchase.objects.all()
     serializer_class = PurchaseSerializer
 
+    # @action(detail=True, methods=['get'])
+    # def get(self, request, *args, **kwargs):
+    #     data = { 
+    #         'register' : request.data.get('register')
+    #     }
+    #     return Response(data)
+
+    @action(detail=True, methods=['get'])
+    def get_specific_purchase(self, request, pk=None):
+        try:
+            purchase = self.get_object()  # 현재의 Purchase 인스턴스를 가져옴
+            serializer = self.get_serializer(purchase)
+            return Response(serializer.data)
+        except Purchase.DoesNotExist:
+            return Response({"message": "해당 결제 정보가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+
     def create(self, request, *args, **kwargs):
         count = int(request.data.get('count'))
         purchase_type = request.data.get('purchase_type')
@@ -140,6 +156,7 @@ class PurchaseViewSet(ModelViewSet):
         if register == None : 
             register = False
 
+        print("Received Register:", register)  # 출력문 추가
         # if not request.user.is_authenticated:
         #     return Response({"message": "로그인을 해주세요."}, status=status.HTTP_401_UNAUTHORIZED)
     
@@ -148,7 +165,7 @@ class PurchaseViewSet(ModelViewSet):
             num = request.data.get('num')
             validDate = request.data.get('validDate')
             pw = request.data.get('pw')
-            print("Received validDate:", validDate)  # 출력문 추가
+        
             # if validDate is None:
             #     return Response({"message": "유효 기간을 입력해주세요."}, status=status.HTTP_400_BAD_REQUEST)
             if user_card.balance < total:
@@ -236,6 +253,7 @@ class PurchaseViewSet(ModelViewSet):
         serializer = self.serializer_class(purchase)
         return Response(serializer.data)
 
+    
             
 
 # 마이페이지
