@@ -16,7 +16,6 @@ urlpatterns = [
     path('', include(product_router.urls)),
     path('', include(card_router.urls)),
     path('', include(purchase_router.urls)),
-    #path('', include(purchase_router.urls)),
     path('products/main/', MainProductListView.as_view(), name='main_product_list'),
     path('products/recentsearch/', ProductViewSet.as_view({'get': 'recent_searches_list'}), name='recent_search_list'),
     path('products/<str:category>/', ProductViewSet.as_view({'get': 'list_by_category'}), name='product_list_by_category'),
