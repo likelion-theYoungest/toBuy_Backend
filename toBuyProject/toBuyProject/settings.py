@@ -79,6 +79,10 @@ REST_FRAMEWORK = {
 SITE_ID = 1 #django sites app setting
 
 CORS_ORIGIN_ALLOW_ALL = True # 모든 호스트 허용
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+    'https://localhost:8000'
+)
 CORS_ALLOW_METHODS = [
 'DELETE',
 'GET',
