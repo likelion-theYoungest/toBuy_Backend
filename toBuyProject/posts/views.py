@@ -104,7 +104,7 @@ class CardViewSet(viewsets.ModelViewSet):
             user = request.user
 
             # 일정 금액 충전하기
-            recharge_amount = 3000
+            recharge_amount = 30000
             card = Card.objects.get(customer=user)
             card.balance += recharge_amount
             card.save()
@@ -171,7 +171,8 @@ class PurchaseViewSet(ModelViewSet):
         count = int(request.data.get('count'))
         purchase_type = request.data.get('purchase_type')
         custom_product_id = request.data.get('product')
-        register = get_object_or_404(User, id=request.user.id)
+        register= request.data.get('register')
+        # register = get_object_or_404(User, id=request.user.id)
 
         user_card = get_object_or_404(Card, customer=request.user)
         product = Products.objects.get(product_id=custom_product_id)
@@ -215,6 +216,7 @@ class PurchaseViewSet(ModelViewSet):
                 
         elif purchase_type == "type2":
             if register is False:
+                
                 # 사용자로부터 간편 카드 등록 여부 확인
                 user_input = request.data.get('input_register')
                 if user_input == "yes":
@@ -226,9 +228,10 @@ class PurchaseViewSet(ModelViewSet):
                     if (input_num == user_card.num and
                         input_cvc == user_card.cvc and
                         input_pw == user_card.pw):
-                        user = request.user
-                        user.register = True
-                        user.save()
+                        register=True
+                        # user = request.user
+                        # user.register = True
+                        # user.save()
 
                     else:
                         return Response({"message": "카드 정보가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
@@ -250,10 +253,11 @@ class PurchaseViewSet(ModelViewSet):
             elif register is True:
                 if user_card.balance < total:
                     return Response({"message": "잔액이 부족합니다."}, status=status.HTTP_400_BAD_REQUEST)
-    
+                print("Balance after deduction:", user_card.balance)
                 with transaction.atomic():
                     user_card.balance -= total
                     user_card.save()
+                    print("Balance after deduction:", user_card.balance)  # 잔액 변경 후 출력
 
         purchase = Purchase(
             image=product.image,
