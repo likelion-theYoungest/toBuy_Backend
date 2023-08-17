@@ -69,10 +69,11 @@ class Purchase(models.Model) :
     count = models.IntegerField(verbose_name="구매 제품 개수", default=1)
     total = models.IntegerField(verbose_name="총 가격", default=0) # price * count
     customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    product = models.ForeignKey(Products, on_delete=models.CASCADE, to_field='product_id')
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, to_field='product_id',related_name='customer_purchases')
     date = models.DateTimeField(verbose_name="구매 날짜와 시각", auto_now_add=True)
     purchase_type = models.CharField(verbose_name="결제 방식", choices=TYPES, default='type1', max_length=20)
-    register = models.BooleanField(verbose_name="간편 결제 등록 여부", default=False)
+    # register = models.ForeignKey(User, on_delete=models.CASCADE, null=True, to_field='register',unique=True,related_name='register_purchases')
+    register = models.BooleanField(null=True,default=False)
     card = models.ForeignKey(Card, on_delete=models.CASCADE, null=True) # 카드 정보 type1 일 때만 받아오기 
     
     def save(self, *args, **kwargs):

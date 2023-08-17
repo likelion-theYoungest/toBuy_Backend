@@ -16,6 +16,8 @@ import string
 from django.db import transaction
 from datetime import datetime
 from rest_framework.permissions import IsAuthenticated
+from django.db import transaction
+
 
 class ProductViewSet(ModelViewSet) :
     queryset = Products.objects.all()
@@ -104,7 +106,7 @@ class CardViewSet(viewsets.ModelViewSet):
             user = request.user
 
             # 일정 금액 충전하기
-            recharge_amount = 3000
+            recharge_amount = 30000
             card = Card.objects.get(customer=user)
             card.balance += recharge_amount
             card.save()
@@ -151,60 +153,37 @@ class PurchaseViewSet(ModelViewSet):
     queryset = Purchase.objects.all()
     serializer_class = PurchaseSerializer
 
-    # @action(detail=True, methods=['get'])
-    # def get(self, request, *args, **kwargs):
-    #     data = { 
-    #         'register' : request.data.get('register')
-    #     }
-    #     return Response(data)
-
-    @action(detail=True, methods=['get'])
-    def get_specific_purchase(self, request, pk=None):
-        try:
-            purchase = self.get_object()  # 현재의 Purchase 인스턴스를 가져옴
-            serializer = self.get_serializer(purchase)
-            return Response(serializer.data)
-        except Purchase.DoesNotExist:
-            return Response({"message": "해당 결제 정보가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
-
     def create(self, request, *args, **kwargs):
         count = int(request.data.get('count'))
         purchase_type = request.data.get('purchase_type')
         custom_product_id = request.data.get('product')
-        register = get_object_or_404(User, id=request.user.id)
+        # register = request.data.get('register') # 카드 등록 여부 프론트 한테 받아옵니다 (True, False)
+        user = request.user
+        if user.is_authenticated:
+            register = user.register 
 
         user_card = get_object_or_404(Card, customer=request.user)
         product = Products.objects.get(product_id=custom_product_id)
         total = int(product.price * count)
-        # user = get_object_or_404(User, id=request.user.id)
+        
+        # if register == None : 
+        #     register = request.user.register  # 또는 register = None
+        register = request.user.register# user.register 값으로 초기화
 
-        if register == None : 
-            register = False
-
-        print("Received Register:", register)  # 출력문 추가
-        # if not request.user.is_authenticated:
-        #     return Response({"message": "로그인을 해주세요."}, status=status.HTTP_401_UNAUTHORIZED)
+        if not request.user.is_authenticated :
+            return Response({"message" : "로그인을 해주세요."}, status=status.HTTP_401_UNAUTHORIZED)
     
         if purchase_type == "type1":
             cvc = request.data.get('cvc')
             num = request.data.get('num')
             validDate = request.data.get('validDate')
             pw = request.data.get('pw')
-        
-            # if validDate is None:
-            #     return Response({"message": "유효 기간을 입력해주세요."}, status=status.HTTP_400_BAD_REQUEST)
+    
             if user_card.balance < total:
                 return Response({"message": "잔액 부족"}, status=status.HTTP_400_BAD_REQUEST)
-            
-            # try:
-            #     input_date = datetime.strptime(validDate, '%Y-%m')  # 'YYYY-MM' 형식의 유효 기간 변환
-            # except ValueError:
-            #     return Response({"message": "올바른 유효 기간 형식이 아닙니다."}, status=status.HTTP_400_BAD_REQUEST)
-            
+
             if (cvc != user_card.cvc or
                 num != user_card.num or
-                # input_date.year != user_card.validDate.year or
-                # input_date.month != user_card.validDate.month or
                 pw != user_card.pw):
                 return Response({"message": "카드 정보가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -226,20 +205,10 @@ class PurchaseViewSet(ModelViewSet):
                     if (input_num == user_card.num and
                         input_cvc == user_card.cvc and
                         input_pw == user_card.pw):
-                        user = request.user
-                        user.register = True
-                        user.save()
+                        register=True
 
                     else:
                         return Response({"message": "카드 정보가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
-                
-                    if user_card.balance < total:
-                        return Response({"message": "잔액이 부족합니다."}, status=status.HTTP_400_BAD_REQUEST)
-
-                    # with transaction.atomic():
-                    #     user_card.balance -= total
-                    #     user_card.save()
-
 
                 elif user_input == "no":
                     return Response({"message": "간편 결제 카드 등록이 필요합니다."}, status=status.HTTP_400_BAD_REQUEST)
@@ -250,10 +219,11 @@ class PurchaseViewSet(ModelViewSet):
             elif register is True:
                 if user_card.balance < total:
                     return Response({"message": "잔액이 부족합니다."}, status=status.HTTP_400_BAD_REQUEST)
-    
+                print("Balance before deduction:", user_card.balance)
                 with transaction.atomic():
                     user_card.balance -= total
                     user_card.save()
+                    print("Balance after deduction:", user_card.balance)  # 잔액 변경 후 출력
 
         purchase = Purchase(
             image=product.image,
@@ -269,7 +239,7 @@ class PurchaseViewSet(ModelViewSet):
             card=user_card
         )
         purchase.save()
-
+#만약 purchase가 진짜 구매했을 때만 반환하게 해야함.(카드값은 갱신 안ㄴ되긴 하지만 결제내역은감)
         serializer = self.serializer_class(purchase)
         return Response(serializer.data)
 
