@@ -72,7 +72,7 @@ class Purchase(models.Model) :
     product = models.ForeignKey(Products, on_delete=models.CASCADE, to_field='product_id',related_name='customer_purchases')
     date = models.DateTimeField(verbose_name="구매 날짜와 시각", auto_now_add=True)
     purchase_type = models.CharField(verbose_name="결제 방식", choices=TYPES, default='type1', max_length=20)
-    # register = models.ForeignKey(User, on_delete=models.CASCADE, null=True, to_field='register',unique=True,related_name='register_purchases')
+    # register = models.ForeignKey(User, on_delete=models.CASCADE, null=True, to_field='register',related_name='register_purchases')
     register = models.BooleanField(null=True,default=False)
     card = models.ForeignKey(Card, on_delete=models.CASCADE, null=True) # 카드 정보 type1 일 때만 받아오기 
     
