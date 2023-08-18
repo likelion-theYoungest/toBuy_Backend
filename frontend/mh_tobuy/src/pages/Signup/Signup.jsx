@@ -333,6 +333,30 @@ const Signup = () => {
   const [failDivAdded, setFailDivAdded] = useState(false);
   const [errorText, setErrorText] = useState("");
 
+  const [emailError, setEmailError] = useState(false); // 이메일 형식 에러 상태
+  const [emailErrorMessage, setEmailErrorMessage] = useState(""); // 이메일 에러 메시지
+
+  const validateEmail = (email) => {
+    // 이메일 형식 검증을 위한 정규식
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (emailRegex.test(email)) {
+      setEmailError(false); // 올바른 형식인 경우 에러 상태 해제
+      setEmailErrorMessage("");
+    } else {
+      setEmailError(true); // 올바르지 않은 형식인 경우 에러 상태 설정
+      setEmailErrorMessage("올바른 이메일 형식이 아닙니다.");
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+
+    // 이메일 형식 검증 실행
+    validateEmail(newEmail);
+  };
+
   const onClick = () => {
     // 사용자 입력 데이터를 서버로 전송하는 로직을 추가합니다.
     const userData = {
@@ -499,9 +523,17 @@ const Signup = () => {
             <Input
               type="text"
               placeholder="아이디 (이메일)"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmailChange}
+              style={emailError ? { borderColor: "red" } : null} // 에러 시 스타일 변경
             />
           </InputBox>
+          {/* 에러 메시지 표시 */}
+          {emailError && (
+            <div style={{ color: "red", fontSize: "16px", margin: "auto" }}>
+              {emailErrorMessage}
+            </div>
+          )}
+
           <InputBox>
             <Input
               type={showPassword ? "text" : "password"}

@@ -29,7 +29,6 @@ const BodyWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-  margin-bottom: 60px;
 `;
 
 const Topbar = styled.div`
@@ -79,6 +78,7 @@ const WhiteBox = styled.div`
   align-content: center;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 const Wrapper = styled.div`
   position: relative;
@@ -141,6 +141,13 @@ const My = styled.div`
   width: 30px;
   cursor: pointer;
 `;
+const url1 = "https://youtube.com/shorts/7YA64wLrEbM?feature=share";
+const url2 = "https://youtube.com/shorts/XLL66HPJgds?feature=share";
+const url3 = "https://youtube.com/shorts/-a6Nai3oNXA?feature=share";
+const url4 = "https://youtube.com/shorts/YqAy04r0voY?feature=share";
+const url5 = "https://youtube.com/shorts/-Co3bZJ9eCU?feature=share";
+const url6 = "https://youtube.com/shorts/ZXF_OfQ9nzk?feature=share";
+const url7 = "https://youtube.com/shorts/TjAyjexk1ig?feature=share";
 
 const Prevideopage = () => {
   const navigate = useNavigate();
@@ -184,10 +191,14 @@ const Prevideopage = () => {
 
         <Body>
           <List>
-            <WhiteBox>
+            <WhiteBox
+              onClick={() => {
+                window.open(url1);
+              }}
+            >
               <DemoVideo>
                 <img
-                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  src={`${process.env.PUBLIC_URL}/images/1.png`}
                   width="150px"
                   height="90px"
                 />
@@ -204,10 +215,14 @@ const Prevideopage = () => {
               </Wrapper>
             </WhiteBox>
 
-            <WhiteBox>
+            <WhiteBox
+              onClick={() => {
+                window.open(url2);
+              }}
+            >
               <DemoVideo>
                 <img
-                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  src={`${process.env.PUBLIC_URL}/images/2.png`}
                   width="150px"
                   height="90px"
                 />
@@ -224,10 +239,14 @@ const Prevideopage = () => {
               </Wrapper>
             </WhiteBox>
 
-            <WhiteBox>
+            <WhiteBox
+              onClick={() => {
+                window.open(url3);
+              }}
+            >
               <DemoVideo>
                 <img
-                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  src={`${process.env.PUBLIC_URL}/images/3.png`}
                   width="150px"
                   height="90px"
                 />
@@ -246,10 +265,14 @@ const Prevideopage = () => {
               </Wrapper>
             </WhiteBox>
 
-            <WhiteBox>
+            <WhiteBox
+              onClick={() => {
+                window.open(url4);
+              }}
+            >
               <DemoVideo>
                 <img
-                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  src={`${process.env.PUBLIC_URL}/images/4.png`}
                   width="150px"
                   height="90px"
                 />
@@ -266,10 +289,14 @@ const Prevideopage = () => {
               </Wrapper>
             </WhiteBox>
 
-            <WhiteBox>
+            <WhiteBox
+              onClick={() => {
+                window.open(url5);
+              }}
+            >
               <DemoVideo>
                 <img
-                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  src={`${process.env.PUBLIC_URL}/images/5.png`}
                   width="150px"
                   height="90px"
                 />
@@ -285,10 +312,14 @@ const Prevideopage = () => {
                 <Title>일반 카드결제 시연 영상 </Title>
               </Wrapper>
             </WhiteBox>
-            <WhiteBox>
+            <WhiteBox
+              onClick={() => {
+                window.open(url6);
+              }}
+            >
               <DemoVideo>
                 <img
-                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  src={`${process.env.PUBLIC_URL}/images/6.png`}
                   width="150px"
                   height="90px"
                 />
@@ -305,10 +336,14 @@ const Prevideopage = () => {
               </Wrapper>
             </WhiteBox>
 
-            <WhiteBox>
+            <WhiteBox
+              onClick={() => {
+                window.open(url7);
+              }}
+            >
               <DemoVideo>
                 <img
-                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  src={`${process.env.PUBLIC_URL}/images/7.png`}
                   width="150px"
                   height="90px"
                 />

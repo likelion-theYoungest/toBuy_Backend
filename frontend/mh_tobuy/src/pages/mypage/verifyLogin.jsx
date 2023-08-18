@@ -222,7 +222,7 @@ const VerifyLogin = () => {
     borderRadius: "6px",
     border: "1px solid #60716F",
     height: "55px",
-    padding: "19px 250px 19px 10px",
+    padding: "19px 19px 10px",
     boxSizing: "border-box",
   };
   const submitStyle = {
