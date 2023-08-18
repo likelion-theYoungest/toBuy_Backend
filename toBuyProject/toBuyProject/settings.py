@@ -23,11 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-kv_kbk*iw%e7pynu-^+98u107i-*(_lz&-gy1dhi4nk@nz0&@l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =False
+DEBUG = True
 
-ALLOWED_HOSTS = [
-    'youngest.pythonanywhere.com'
-]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -54,47 +52,19 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_auth.registration',
-    
-    'django_filters', # django-filter 등록
-    'corsheaders',
 ]
 SITE_ID = 1
 
 REST_FRAMEWORK = {
-    # CamelCaseJSON 관련 설정
-    'DEFAULT_RENDERER_CLASSES': (
-    'djangorestframework_camel_case.render.CamelCaseJSONRenderer', 
-    'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
-    ),
-    'DEFAULT_PARSER_CLASSES': (
-    'djangorestframework_camel_case.parser.CamelCaseFormParser', 
-    'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
-    'djangorestframework_camel_case.parser.CamelCaseJSONParser',
-    'rest_framework.parsers.JSONParser',
-    ),
 	'DEFAULT_AUTHENTICATION_CLASSES': [
     'rest_framework.authentication.TokenAuthentication', 
     ],
 }
 
-CORS_ORIGIN_ALLOW_ALL = True # 모든 호스트 허용
-CORS_ORIGIN_WHITELIST = (
-    'youngest.pythonanywhere.com',
-    'http://localhost:3000',
-    'https://localhost:8000'
-)
-CORS_ALLOW_METHODS = [
-'DELETE',
-'GET',
-'OPTIONS',
-'PATCH',
-'POST',
-'PUT',
-]
+
+SITE_ID = 1 #django sites app setting
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware', 
-    'django.middleware.common.CommonMiddleware', 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -105,13 +75,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'toBuyProject.urls'
-FRONTEND_DIR =  BASE_DIR / "frontend"
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-                FRONTEND_DIR / "build",
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -172,13 +140,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+STATIC_URL = 'static/'
 import os
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    FRONTEND_DIR / "build/static",
-]
-STATIC_ROOT = os.path.join('staticfiles')
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
