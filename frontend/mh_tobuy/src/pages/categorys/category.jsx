@@ -182,6 +182,7 @@ const Category = () => {
               src={`${process.env.PUBLIC_URL}/images/로고3.png`}
               alt="logo"
               width="90px"
+              onClick={goMain}
             />
           </Logo>
           <Video onClick={navigateToVideo}>

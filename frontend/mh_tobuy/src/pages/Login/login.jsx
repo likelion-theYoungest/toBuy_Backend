@@ -127,7 +127,6 @@ const Input = styled.input`
   border-radius: 6px;
   border: none;
   margin: auto;
-  margin-top: 9px;
   font-size: 17px;
   &::placeholder {
     color: #60716f;
@@ -139,10 +138,10 @@ const Input = styled.input`
   }
 `;
 const FindLinks = styled.div`
-  margin-bottom: -10%;
-  margin-left: 67%;
-  display: flex;
-  gap: 10px; /* 아이디 찾기와 비밀번호 찾기 간격 조정 */
+  margin-left: auto;
+  margin-right: 7px;
+  margin-top: 5px;
+  margin-bottom: -7%;
 `;
 
 const Findidment = styled.div`
@@ -169,7 +168,7 @@ const Findpwment = styled.div`
 
 const LoginBox = styled.div`
   margin: auto;
-  margin-top: 10%;
+  margin-top: 8%;
   display: flex;
   width: 222px;
   height: 53px;
@@ -294,7 +293,7 @@ const CmLogo = styled.div`
 `;
 
 const MentBox = styled.div`
-  margin-top: 15%;
+  margin-top: 28%;
   height: 60px;
 `;
 
@@ -414,7 +413,7 @@ const Login = () => {
     color: "red",
     textAlign: "left",
     margin: "0 auto",
-    marginTop: "10px",
+    marginTop: "30px",
   };
   return (
     <Container>
@@ -478,17 +477,18 @@ const Login = () => {
             </InputBox>
             <InputBox>
               <Input
-                type="text"
+                type="password"
                 placeholder="비밀번호"
                 value={loginPw}
                 onChange={(e) => setLoginPw(e.target.value)}
               />
             </InputBox>
+            <FindLinks>
+              <Findidment onClick={navigateTofindid}>아이디 찾기</Findidment>
+            </FindLinks>
             {divs}
           </BoxContainer>
-          <FindLinks>
-            <Findidment onClick={navigateTofindid}>아이디 찾기</Findidment>
-          </FindLinks>
+
           <LoginBox onClick={onClick}>
             <LoginText>로그인</LoginText>
           </LoginBox>

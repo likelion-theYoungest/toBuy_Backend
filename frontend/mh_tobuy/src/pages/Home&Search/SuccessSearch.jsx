@@ -150,6 +150,10 @@ const InputSearch = styled.input`
   opacity: 0.8; /* 인풋을 조금 투/명하게 설정 */
   //   color: white; /* 글자색 설정 */
   caret-color: white; /* 커서 색상 설정 */
+  &:focus {
+    outline: none;
+    border: none;
+  }
 `;
 
 const Gra = styled.div`
@@ -292,7 +296,7 @@ const SuccessSearch = () => {
         )
         .then(function (result) {
           setProducts(result.data);
-          console.log("성공");
+          console.log("검색 성공");
         })
         .catch(function (error) {
           console.error("에러 발생 : ", error);
@@ -307,6 +311,10 @@ const SuccessSearch = () => {
   };
 
   const handleSearchSubmit = () => {
+    if (search.trim() === "") {
+      // 검색어가 비어있는 경우 아무런 동작을 하지 않음
+      return;
+    }
     // 검색어와 함께 검색 결과 페이지로 이동
     const encodedSearch = encodeURIComponent(search);
     setRecentSearches((prevSearches) => {
@@ -354,6 +362,7 @@ const SuccessSearch = () => {
               src={`${process.env.PUBLIC_URL}/images/로고3.png`}
               alt="logo"
               width="90px"
+              onClick={goMain}
             />
           </Logo>
           <Video onClick={navigateToVideo}>

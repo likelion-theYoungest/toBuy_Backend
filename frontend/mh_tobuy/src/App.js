@@ -24,6 +24,7 @@ import Health from "./pages/categorys/Health";
 import Main from "./pages/Home&Search/Main";
 import FailSearch from "./pages/Home&Search/FailSearch";
 import SuccessSearch from "./pages/Home&Search/SuccessSearch";
+import PayHistory from "./pages/mypage/payHistory";
 import "./index.css";
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
           <Route path="/products" element={<SuccessSearch />} />;
           <Route path="/Complete" element={<Complete />} />
           {/* <Route path="/Detail" element={<Detail />} /> */}
+          <Route path="/PayHistory" element={<PayHistory />} />;
           <Route
             path="/products/:category/:productId/"
             element={<ProductDetail />}

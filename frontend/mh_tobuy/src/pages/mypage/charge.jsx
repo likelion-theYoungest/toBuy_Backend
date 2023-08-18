@@ -340,6 +340,7 @@ const Charge = () => {
               src={`${process.env.PUBLIC_URL}/images/로고3.png`}
               alt="logo"
               width="90px"
+              onClick={goMain}
             />
           </Logo>
           <Video onClick={navigateToVideo}>
@@ -393,7 +394,7 @@ const Charge = () => {
                 >
                   <ModalView onClick={(e) => e.stopPropagation()}>
                     <div className="desc">
-                      카드잔액 {balance}원이
+                      카드잔액 {balance + 30000}원이
                       <br />
                       충전 되었습니다!
                     </div>
@@ -419,7 +420,12 @@ const Charge = () => {
                   height="84px"
                 />
               </Ad>
-              <Circle onClick={() => openModalHandler(30000)}>
+              <Circle
+                onClick={() => {
+                  openModalHandler();
+                  getBalance();
+                }}
+              >
                 <CardImg>
                   <img
                     src={`${process.env.PUBLIC_URL}/images/charge.png`}
@@ -433,6 +439,30 @@ const Charge = () => {
                   <Won>원</Won>
                 </AmountWrapper>
               </Circle>
+              {isOpen ? (
+                <ModalBackdrop
+                  onClick={() => {
+                    setIsOpen(false);
+                  }}
+                >
+                  <ModalView onClick={(e) => e.stopPropagation()}>
+                    <div className="desc">
+                      카드잔액 {balance + 30000}원이
+                      <br />
+                      충전 되었습니다!
+                    </div>
+                    {/* <ExitBtn onClick={() => setIsOpen(false)}>확인</ExitBtn> */}
+                    <ExitBtn
+                      onClick={() => {
+                        setIsOpen(false);
+                        charging();
+                      }}
+                    >
+                      확인
+                    </ExitBtn>
+                  </ModalView>
+                </ModalBackdrop>
+              ) : null}
             </ContentBox>
 
             <ContentBox>
@@ -443,7 +473,13 @@ const Charge = () => {
                   height="84px"
                 />
               </Ad>
-              <Circle onClick={() => openModalHandler(30000)}>
+
+              <Circle
+                onClick={() => {
+                  openModalHandler();
+                  getBalance();
+                }}
+              >
                 <CardImg>
                   <img
                     src={`${process.env.PUBLIC_URL}/images/charge.png`}
@@ -457,6 +493,30 @@ const Charge = () => {
                   <Won>원</Won>
                 </AmountWrapper>
               </Circle>
+              {isOpen ? (
+                <ModalBackdrop
+                  onClick={() => {
+                    setIsOpen(false);
+                  }}
+                >
+                  <ModalView onClick={(e) => e.stopPropagation()}>
+                    <div className="desc">
+                      카드잔액 {balance + 30000}원이
+                      <br />
+                      충전 되었습니다!
+                    </div>
+                    {/* <ExitBtn onClick={() => setIsOpen(false)}>확인</ExitBtn> */}
+                    <ExitBtn
+                      onClick={() => {
+                        setIsOpen(false);
+                        charging();
+                      }}
+                    >
+                      확인
+                    </ExitBtn>
+                  </ModalView>
+                </ModalBackdrop>
+              ) : null}
             </ContentBox>
 
             <ContentBox>
@@ -467,7 +527,13 @@ const Charge = () => {
                   height="84px"
                 />
               </Ad>
-              <Circle onClick={() => openModalHandler(30000)}>
+
+              <Circle
+                onClick={() => {
+                  openModalHandler();
+                  getBalance();
+                }}
+              >
                 <CardImg>
                   <img
                     src={`${process.env.PUBLIC_URL}/images/charge.png`}
@@ -481,6 +547,30 @@ const Charge = () => {
                   <Won>원</Won>
                 </AmountWrapper>
               </Circle>
+              {isOpen ? (
+                <ModalBackdrop
+                  onClick={() => {
+                    setIsOpen(false);
+                  }}
+                >
+                  <ModalView onClick={(e) => e.stopPropagation()}>
+                    <div className="desc">
+                      카드잔액 {balance + 30000}원이
+                      <br />
+                      충전 되었습니다!
+                    </div>
+                    {/* <ExitBtn onClick={() => setIsOpen(false)}>확인</ExitBtn> */}
+                    <ExitBtn
+                      onClick={() => {
+                        setIsOpen(false);
+                        charging();
+                      }}
+                    >
+                      확인
+                    </ExitBtn>
+                  </ModalView>
+                </ModalBackdrop>
+              ) : null}
             </ContentBox>
 
             <ContentBox>
@@ -491,7 +581,13 @@ const Charge = () => {
                   height="84px"
                 />
               </Ad>
-              <Circle onClick={() => openModalHandler(30000)}>
+
+              <Circle
+                onClick={() => {
+                  openModalHandler();
+                  getBalance();
+                }}
+              >
                 <CardImg>
                   <img
                     src={`${process.env.PUBLIC_URL}/images/charge.png`}
@@ -505,6 +601,30 @@ const Charge = () => {
                   <Won>원</Won>
                 </AmountWrapper>
               </Circle>
+              {isOpen ? (
+                <ModalBackdrop
+                  onClick={() => {
+                    setIsOpen(false);
+                  }}
+                >
+                  <ModalView onClick={(e) => e.stopPropagation()}>
+                    <div className="desc">
+                      카드잔액 {balance + 30000}원이
+                      <br />
+                      충전 되었습니다!
+                    </div>
+                    {/* <ExitBtn onClick={() => setIsOpen(false)}>확인</ExitBtn> */}
+                    <ExitBtn
+                      onClick={() => {
+                        setIsOpen(false);
+                        charging();
+                      }}
+                    >
+                      확인
+                    </ExitBtn>
+                  </ModalView>
+                </ModalBackdrop>
+              ) : null}
             </ContentBox>
           </List>
         </Body>

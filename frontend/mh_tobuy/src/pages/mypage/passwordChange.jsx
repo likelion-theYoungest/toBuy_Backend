@@ -92,22 +92,20 @@ const FormContent = styled.div`
   align-items: center;
 
   flex-wrap: wrap;
-  margin-left: 42px;
-  width: 295px;
+  flex-direction: column;
   margin-top: 47px;
 `;
 const Pwlabel = styled.div`
-  width: 75px;
   color: #60716f;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
   margin-top: 20px;
-  text-align: left;
+  text-align: center;
 `;
 const Pw = styled.div`
-  margin-top: 20px;
+  margin-top: 13px;
   margin-left: 9px;
 `;
 // const Newpwlabel = styled.div``;
@@ -348,6 +346,7 @@ const PasswordChange = () => {
     color: "red",
     textAlign: "left",
     margin: "0 auto",
+    marginTop: "16px",
   };
   return (
     <Container>
@@ -365,6 +364,7 @@ const PasswordChange = () => {
               src={`${process.env.PUBLIC_URL}/images/로고3.png`}
               alt="logo"
               width="90px"
+              onClick={goMain}
             />
           </Logo>
           <Video onClick={navigateToVideo}>
@@ -413,6 +413,7 @@ const PasswordChange = () => {
                   onChange={(e) => setnewPasswordcheck(e.target.value)}
                 />
               </Pw>
+              {divs}
             </FormContent>
             <Submit>
               <button

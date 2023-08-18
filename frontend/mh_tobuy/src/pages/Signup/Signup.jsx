@@ -207,6 +207,7 @@ const ButtonContainer = styled.div`
 `;
 const MentBox = styled.div`
   height: 60px;
+  margin-top: 30px;
 `;
 const Ment = styled.div`
   width: 270px;

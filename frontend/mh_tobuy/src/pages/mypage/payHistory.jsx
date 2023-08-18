@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -13,7 +12,6 @@ const Container = styled.div`
   -ms-overflow-style: none;
   overflow: hidden;
 
-  /* 미디어 쿼리 적용 */
   @media (hover: hover) {
     width: 390px;
     margin: 0 auto;
@@ -65,20 +63,6 @@ const Body = styled.div`
   flex-shrink: 0;
 `;
 
-const Header = styled.div`
-  height: 94px;
-  position: relative;
-`;
-const HeaderContent = styled.div`
-  position: absolute;
-  bottom: 4px;
-  left: 26px;
-  color: #000;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-`;
 const Gra = styled.div`
   position: relative;
   background: linear-gradient(to right, #e02d11, #05bba2);
@@ -86,33 +70,129 @@ const Gra = styled.div`
   height: 2px;
   border: none; /* 선 없애기 */
 `;
-const DescriptionWrapper = styled.div`
-  height: 68px;
-  position: relative;
-  margin-bottom: 30px;
-`;
-const Description = styled.div`
-  position: absolute;
-  top: 15px;
-  text-align: left;
-  left: 26px;
-  width: 75%;
-  font-size: 14px;
-  line-height: normal;
-`;
 const FormContent = styled.div`
   height: auto;
-  margin: 0 10px;
+  margin: 43px 32px;
+  margin-bottom: 0;
 `;
-const Id = styled.div``;
-const Pw = styled.div`
+const ImgWrapper = styled.div`
+  width: 100%;
+`;
+const PayImg = styled.div`
+  width: 220px;
+  margin: auto;
+  position: relative;
+  // margin-bottom: 10px;
   margin-top: 30px;
 `;
+const PlusImg = styled.div`
+  position: absolute;
+  right: -16px;
+  bottom: -13px;
+`;
+const ProductName = styled.div`
+  color: #000;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  height: 80px;
+  padding-top: 12px;
+  box-sizing: border-box;
+`;
+const ProductWrapper = styled.div`
+  height: 56px;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`;
+const QuantityWrapper = styled.div`
+  display: inline;
+`;
+const Whole = styled.span``;
+const Quantity = styled.span``;
+const Count = styled.span``;
+const PriceWrapper = styled.div`
+  display: inline;
+`;
+const Price = styled.span``;
+const Won = styled.span``;
+
+const TypeHeader = styled.div`
+  height: 50px;
+  position: relative;
+  text-align: left;
+  margin-bottom: 3px;
+`;
+const TypeHeaderContent = styled.div`
+  bottom: 4px;
+  left: 10px;
+  position: absolute;
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`;
+const CardWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding: 0 10px;
+  color: #000;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+`;
+const Type = styled.div`
+  display: inline;
+`;
+const CardImg = styled.div`
+  display: inline;
+`;
+const WhenHeader = styled.div`
+  height: 50px;
+  position: relative;
+  text-align: left;
+  margin-bottom: 3px;
+`;
+const WhenHeaderContent = styled.div`
+  bottom: 4px;
+  left: 10px;
+  position: absolute;
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`;
+const When = styled.div`
+  color: #000;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  text-align: left;
+  padding: 13px 10px 0;
+`;
+
 const Submit = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 64px;
+  margin-top: 50px;
 `;
 const CoachMark = styled.div`
   position: fixed;
@@ -170,7 +250,7 @@ const ModalBackdrop = styled.div`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.6);
 
-  width: 100%;
+  width: 390px;
   margin: 0 auto;
 
   top: 0;
@@ -215,16 +295,9 @@ const ModalView = styled.div.attrs((props) => ({
   }
 `;
 
-const VerifyLogin = () => {
+const PayHistory = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const inputStyle = {
-    width: "100%",
-    borderRadius: "6px",
-    border: "1px solid #60716F",
-    height: "55px",
-    padding: "19px 250px 19px 10px",
-    boxSizing: "border-box",
-  };
+
   const submitStyle = {
     width: "222px",
     height: "53px",
@@ -235,14 +308,12 @@ const VerifyLogin = () => {
     border: "none",
     color: "white",
   };
-
   const navigate = useNavigate();
-
   const navigateToBack = () => {
     window.history.back();
   };
-  const navigateToVideo = () => {
-    navigate("/PlayVideo");
+  const navigateToMypage = () => {
+    navigate("/MypageMain");
   };
   const goMenu = () => {
     navigate("/Category");
@@ -256,7 +327,25 @@ const VerifyLogin = () => {
   const goMyPage = () => {
     navigate("/MypageMain");
   };
-  //스크롤 방지
+  const goPlayvideo = () => {
+    navigate("/PlayVideo");
+  };
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const productName = queryParams.get("productName");
+  const unitPrice = queryParams.get("unitPrice");
+  const quantity = queryParams.get("quantity");
+
+  const imagePath = queryParams.get("imagePath");
+  const productId = queryParams.get("productId");
+
+  // 총 가격 계산
+  const totalPrice = unitPrice * quantity;
+
+  const BACKEND_URL =
+    "https://youngest.pythonanywhere.com" || "http://127.0.0.1:8000";
+
   useEffect(() => {
     if (isOpen) {
       // 모달 창이 열려 있는 경우에는 스크롤 방지
@@ -280,67 +369,19 @@ const VerifyLogin = () => {
   }, [isOpen]);
 
   const openModalHandler = () => {
+    // isOpen의 상태를 변경하는 메소드를 구현
+    // !false -> !true -> !false
     setIsOpen(!isOpen);
   };
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const [divs, setDivs] = useState([]);
-  const [failDivAdded, setFailDivAdded] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const requestData = {
-      password: password,
-      email: email,
-    };
-    const BACKEND_URL =
-      "https://youngest.pythonanywhere.com" || "http://127.0.0.1:8000";
-    axios
-      .post(`${BACKEND_URL}/api/user-info/`, requestData, {
-        headers: {
-          Authorization: `Token ${localStorage.getItem("access_token")}`, // 토큰을 헤더에 추가
-        },
-      })
-      .then((response) => {
-        console.log("회원정보 일치");
-        navigate("/PasswordChange");
-      })
-      .catch((error) => {
-        console.error("실패:", error);
-
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.non_field_errors
-        ) {
-          setError(error.response.data.non_field_errors[0]);
-        } else {
-          setError("An error occurred.");
-        }
-
-        if (!failDivAdded) {
-          const newFailDiv = (
-            <div key={divs.length} className="failDiv" style={failStyle}>
-              회원정보가 일치하지 않습니다. <br />
-              아이디, 비밀번호를 다시 한 번 확인해주세요.
-            </div>
-          );
-          setDivs([...divs, newFailDiv]);
-          setFailDivAdded(true);
-        }
-      });
-  };
-
-  const failStyle = {
-    color: "red",
-    textAlign: "left",
-    margin: "0 auto",
-  };
-
+  const Title = styled.div`
+    margin-top: 70px;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
+  `;
   return (
     <Container>
       <BodyWrapper>
@@ -360,7 +401,7 @@ const VerifyLogin = () => {
               onClick={goMain}
             />
           </Logo>
-          <Video onClick={navigateToVideo}>
+          <Video onClick={goPlayvideo}>
             <img
               src={`${process.env.PUBLIC_URL}/images/carousel-video.png`}
               width="30px"
@@ -370,50 +411,56 @@ const VerifyLogin = () => {
         </Topbar>
 
         <Body>
-          <Header>
-            <HeaderContent>회원정보 확인</HeaderContent>
-          </Header>
-          <Gra></Gra>
-          <form>
-            <DescriptionWrapper>
-              <Description>
-                정보를 안전하게 보호하기 위해 로그인을 다시 한번 진행해주세요.
-              </Description>
-            </DescriptionWrapper>
-            <FormContent>
-              <Id>
-                <input
-                  type="email"
-                  placeholder="아이디 (이메일)"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  style={inputStyle}
+          {/* <Title>결제 내역 상세보기</Title> <Gra></Gra> */}
+          <FormContent>
+            <Title>결제 내역 상세보기</Title> <Gra></Gra>
+            <ImgWrapper>
+              <PayImg>
+                <img
+                  src={`${BACKEND_URL}${imagePath}`}
+                  alt={productName}
+                  width="220px"
+                ></img>
+              </PayImg>
+            </ImgWrapper>
+            <ProductName>{productName}</ProductName>
+            <Gra></Gra>
+            <ProductWrapper>
+              <QuantityWrapper>
+                <Whole>총 </Whole>
+                <Quantity>{quantity}</Quantity>
+                <Count> 개</Count>
+              </QuantityWrapper>
+              <PriceWrapper>
+                <Price>{totalPrice}</Price>
+                <Won> 원</Won>
+              </PriceWrapper>
+            </ProductWrapper>
+            {/* <TypeHeader>
+              <TypeHeaderContent>결제 유형</TypeHeaderContent>
+            </TypeHeader>
+            <Gra></Gra>
+            <CardWrapper>
+              <Type>일반 카드 결제</Type>
+              <CardImg>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/card.png`}
+                  width="110px"
+                  height="65px"
                 />
-              </Id>
-              <Pw>
-                <input
-                  type="password"
-                  placeholder="비밀번호"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  style={inputStyle}
-                />
-              </Pw>
-              {divs}
-              <Submit>
-                <button
-                  onClick={(e) => {
-                    handleSubmit(e);
-                  }}
-                  style={submitStyle}
-                >
-                  확인
-                </button>
-              </Submit>
-            </FormContent>
-          </form>
+              </CardImg>
+            </CardWrapper>
+            <WhenHeader>
+              <WhenHeaderContent>결제 일시</WhenHeaderContent>
+            </WhenHeader>
+            <Gra></Gra>
+            <When>2023.08.18 00:00 pm</When> */}
+          </FormContent>
+          <Submit onClick={navigateToMypage}>
+            <button formAction="" style={submitStyle}>
+              확인
+            </button>
+          </Submit>
           <CoachMark>
             <img
               src={`${process.env.PUBLIC_URL}/images/coachmark.png`}
@@ -427,8 +474,8 @@ const VerifyLogin = () => {
                 <ExitBtn onClick={openModalHandler}>x</ExitBtn>
                 <CmLogo>
                   <img
-                    src={`${process.env.PUBLIC_URL}/images/verifylogincoachmark.png`}
-                    alt="verifylogincoachmark"
+                    src={`${process.env.PUBLIC_URL}/images/payhistorycoachmark.png`}
+                    alt="payhistorycoachmark"
                     width="300"
                     height="700"
                   />
@@ -465,4 +512,4 @@ const VerifyLogin = () => {
   );
 };
 
-export default VerifyLogin;
+export default PayHistory;

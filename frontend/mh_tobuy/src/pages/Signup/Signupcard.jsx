@@ -298,7 +298,7 @@ const Signupcard = () => {
     num: "",
     pw: "",
     cvc: "",
-    validDate: "",
+    validDate: "08/24",
     balance: "",
   });
 
@@ -374,8 +374,8 @@ const Signupcard = () => {
             <Cvctxt>CVC</Cvctxt>
             <Cvcnum>{card.cvc}</Cvcnum>
             <br />
-            <Usedatetxt>유효기간 년/월</Usedatetxt>
-            <Usedate>{card.validDate}</Usedate>
+            <Usedatetxt>유효기간</Usedatetxt>
+            <Usedate>08/24</Usedate>
           </CardinfoBox>
           <RemainaccountBox>
             <Remainaccounttxt>카드 잔액</Remainaccounttxt>
