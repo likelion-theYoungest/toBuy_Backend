@@ -263,7 +263,7 @@ const ModalView = styled.div.attrs((props) => ({
   flex-direction: column;
   border-radius: 20px;
   width: 90%;
-  padding-top: 10%;
+  padding-top: 7%;
   padding-bottom: 30px;
   background-color: #ffffff;
   overflow-y: auto; /* 스크롤을 추가 */
