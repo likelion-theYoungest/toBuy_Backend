@@ -304,7 +304,9 @@ const QuickPayHeader = styled.div`
   margin-right: auto;
   margin-left: 47px;
 `;
-const QuickPayBtn = styled.div``;
+const QuickPayBtn = styled.div`
+  display: inline;
+`;
 const QuickPayImg = styled.div`
   display: flex;
   width: 266px;
@@ -643,7 +645,7 @@ const Payment = () => {
     fontSize: "8px",
     fontWeight: "300",
     textAlign: "left",
-    marginTop: "5px",
+    marginTop: "10px",
     marginLeft: "10px",
   };
 
@@ -653,8 +655,32 @@ const Payment = () => {
   };
   const [inputStatus, setInputStatus] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [userData, setUserData] = useState({
+    register: "",
+  });
   //스크롤 방지
   useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/mypage/`, {
+        headers: {
+          Authorization: `Token ${localStorage.getItem("access_token")}`,
+        },
+      }) // 사용자 정보를 불러오는 API 엔드포인트
+      .then((response) => {
+        const { register } = response.data.profile; // API 응답에서 name, email, phone 정보 추출
+        setUserData({
+          register,
+        });
+        console.log("register", register);
+        if (register) {
+          console.log("카드 보이기");
+          IsRegister("카드 등록이 완료되었습니다.");
+        }
+      })
+      .catch((error) => {
+        console.error("사용자 정보 불러오기 실패:", error);
+      });
+
     if (isOpen) {
       // 모달 창이 열려 있는 경우에는 스크롤 방지
       document.body.style.cssText = `
@@ -697,8 +723,10 @@ const Payment = () => {
   };
 
   const openModalHandler2 = () => {
-    console.log("간편등록창 엽니다");
-    setIsModal2Open(!isModal2Open);
+    console.log("간편등록창 열리거나 닫힙니다");
+    if (!showCard) {
+      setIsModal2Open(!isModal2Open);
+    }
   };
 
   const goMenu = () => {
@@ -772,7 +800,7 @@ const Payment = () => {
     }
   };
 
-  const [showCard, setShowCard] = useState("false");
+  const [showCard, setShowCard] = useState(false);
   const IsRegister = (pass) => {
     if (pass == "카드 등록이 완료되었습니다.") {
       setShowCard(true);
@@ -784,8 +812,10 @@ const Payment = () => {
 
     if (inputStatus === "paybtn") {
       PaymentonClick();
+      pay();
     } else if (inputStatus === "quickpaybtn") {
       QuickPaymentonClick();
+      pay();
     }
   };
 
@@ -799,6 +829,7 @@ const Payment = () => {
 
   const [divs1, setDivs1] = useState([]);
   const [failDivAdded1, setFailDivAdded1] = useState(false);
+  const [errorText, setErrorText] = useState("");
 
   const [divs2, setDivs2] = useState([]);
   const [failDivAdded2, setFailDivAdded2] = useState(false);
@@ -822,7 +853,7 @@ const Payment = () => {
       })
       .then((response) => {
         console.log("결제 성공:", response.id);
-        // navigate("/ProductDetail");
+        pay();
       })
 
       .catch((error) => {
@@ -857,7 +888,7 @@ const Payment = () => {
       })
       .then((response) => {
         console.log("결제 성공:", response.data);
-        // navigate("/ProductDetail");
+        pay();
       })
 
       .catch((error) => {
@@ -865,7 +896,7 @@ const Payment = () => {
       });
   };
   const QuickPaymentRegister = () => {
-    console.log("간편결제 등록창 떠요");
+    console.log("간편결제 등록 함수 실행됩니다");
     const userData = {
       cvc: cvc,
       num: num,
@@ -873,7 +904,6 @@ const Payment = () => {
       pw: pw,
       input_register: "yes",
     };
-
     axios
       .post(`${BACKEND_URL}/purchase/register/`, userData, {
         headers: {
@@ -881,22 +911,22 @@ const Payment = () => {
         },
       })
       .then((response) => {
-        console.log("간편결제 등록 성공:", response.data[0].message);
+        console.log("간편결제 등록 성공:", response.data.message);
         const passregister = response.data.message;
+        if ((userData.register = "True")) {
+          IsRegister(passregister);
+          setFailDivAdded2(false);
+        }
         IsRegister(passregister);
+        setErrorText("");
+        setFailDivAdded2(false);
       })
-
       .catch((error) => {
-        console.error("결제 실패:", error);
+        console.error("간편결제 등록 실패:", error);
         console.log("userData:", userData);
 
         if (!failDivAdded2) {
-          const newFailDiv = (
-            <div key={divs2.length} className="failDiv" style={NoneStyle}>
-              카드정보가 존재하지 않습니다.
-            </div>
-          );
-          setDivs2([...divs2, newFailDiv]);
+          setErrorText("간편 결제 등록에 실패했습니다. 입력을 확인해 주세요.");
           setFailDivAdded2(true);
         }
       });
@@ -918,6 +948,7 @@ const Payment = () => {
               src={`${process.env.PUBLIC_URL}/images/로고3.png`}
               alt="logo"
               width="90px"
+              onClick={goMain}
             />
           </Logo>
           <Video onClick={goPlayvideo}>
@@ -1010,8 +1041,8 @@ const Payment = () => {
                             <Ucvc>{card.cvc}</Ucvc>
                           </CVCWrapper>
                           <DateWrapper>
-                            <Date>유효기간 년/월</Date>
-                            <Udate>{card.validDate}</Udate>
+                            <Date>유효기간</Date>
+                            <Udate>08/24</Udate>
                           </DateWrapper>
                           <CardBalanceWrapper>
                             <Balance>카드 잔액</Balance>
@@ -1107,7 +1138,7 @@ const Payment = () => {
               </PayWrapper>
               <QuickPayWrapper>
                 <QuickPayHeader>
-                  <PayBtn>
+                  <QuickPayBtn>
                     <input
                       type="radio"
                       id="quickpaybtn"
@@ -1115,7 +1146,7 @@ const Payment = () => {
                       checked={inputStatus === "quickpaybtn"}
                       onChange={() => handleClickRadioButton("quickpaybtn")}
                     />
-                  </PayBtn>
+                  </QuickPayBtn>
                   <label htmlFor="quickpaybtn">간편 카드결제</label>
                 </QuickPayHeader>
                 {inputStatus === "quickpaybtn" && (
@@ -1131,7 +1162,6 @@ const Payment = () => {
                       {showCard && (
                         <Card>
                           <Cardinfo>등록된 카드</Cardinfo>
-
                           <img
                             src={`${process.env.PUBLIC_URL}/images/card.png`}
                             width="174px"
@@ -1140,7 +1170,7 @@ const Payment = () => {
                         </Card>
                       )}
                     </QuickPayImg>
-                    {isModal2Open ? (
+                    {isModal2Open && !showCard && (
                       <ModalBackdrop onClick={openModalHandler2}>
                         <ModalView onClick={(e) => e.stopPropagation()}>
                           <div className="desc">
@@ -1221,9 +1251,12 @@ const Payment = () => {
                           </ExitBtn>
                         </ModalView>
                       </ModalBackdrop>
-                    ) : null}
+                    )}
                   </>
                 )}
+                <div className="noneDiv" style={NoneStyle}>
+                  {errorText}
+                </div>
               </QuickPayWrapper>
             </Content>
             <Gra></Gra>

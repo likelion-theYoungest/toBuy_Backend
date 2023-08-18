@@ -214,7 +214,6 @@ const CmtxtBox = styled.div`
   content-align: center;
   flex-direction: column;
   margin: 0 auto;
-  margin-top: 10px;
 `;
 const Cmtextemph = styled.div`
   font-weight: 700;
@@ -232,7 +231,7 @@ const Cmtext = styled.div`
 `;
 const BtmBox = styled.div`
   margin: 0 auto;
-  margin-top: 20%;
+  margin-top: 6%;
 
   display: flex;
   width: 145px;
@@ -264,10 +263,11 @@ const ModalView = styled.div.attrs((props) => ({
   flex-direction: column;
   border-radius: 20px;
   width: 90%;
-  padding-top: 10px;
+  padding-top: 10%;
   padding-bottom: 30px;
   background-color: #ffffff;
   overflow-y: auto; /* 스크롤을 추가 */
+  width: 300px;
 
   div.desc {
     margin: 50px;

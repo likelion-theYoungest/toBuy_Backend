@@ -8,10 +8,10 @@ const Container = styled.div`
   min-height: 100vh;
   position: relative;
   text-align: center;
-  background-color: #fffff;
+  //   background-color: #f5f0e4;
   -ms-overflow-style: none;
+  overflow: hidden;
 
-  /* 미디어 쿼리 적용 */
   @media (hover: hover) {
     width: 390px;
     margin: 0 auto;
@@ -23,215 +23,314 @@ const Container = styled.div`
 `;
 
 const BodyWrapper = styled.div`
-  flex: 1; /* 남은 공간을 채우도록 설정 */
-  overflow: auto; /* 스크롤이 있는 경우 내용을 스크롤합니다. */
+  flex: 1;
+  overflow: auto;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  margin-bottom: 60px;
 `;
 
 const Topbar = styled.div`
   display: flex;
+  justify-content: space-between;
   height: 60px;
   padding: 10px;
   align-items: center;
-
-  flex-shrink: 0;
-  background-color: #fffff;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
 
 const Back = styled.div`
   width: 30px;
-  height: 24px;
   cursor: pointer;
 `;
 
-const Toplogo = styled.div`
-  margin: 0 auto;
-`;
-const Body = styled.div`
-  display: flex;
-  height: 752px;
-  padding: 30px 14px;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 20px;
-  flex-shrink: 0;
-  overflow: hidden;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-const WhiteBox = styled.div`
-  display: flex;
-  margin: 0 auto;
-  width: 346px;
-  height: 120px;
-  flex-shrink: 0;
-  border-radius: 6px;
-  background: #fff;
-  box-shadow: 0px 0px 11px 3px rgba(0, 0, 0, 0.25);
+const Logo = styled.div`
   cursor: pointer;
 `;
 
 const Video = styled.div`
-  width: 150px;
+  cursor: pointer;
+  width: 30px;
+`;
+
+const Body = styled.div`
+  height: 752px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  flex-shrink: 0;
+`;
+const List = styled.div`
+  height: auto;
+  padding-top: 10px;
+`;
+const WhiteBox = styled.div`
+  height: 120px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 11px 3px rgba(0, 0, 0, 0.25);
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+`;
+const Wrapper = styled.div`
+  position: relative;
   height: 90px;
-  flex-shrink: 0;
-  fill: #bcbcbc;
-  margin-top: 5%;
-  margin-left: 5%;
+  margin-left: 10px;
+`;
+const DemoVideo = styled.div``;
+const DemoVideo2 = styled.div`
+  margin-left: -70px;
 `;
 
-const Videologo = styled.div`
-  margin-top: 8%;
-  margin-left: 2%;
-  width: 44px;
-  height: 25.283px;
-  flex-shrink: 0;
+const DemoLogo = styled.div`
+  position: absolute;
+  top: 14px;
+  left: 8px;
 `;
-
-const VideoText = styled.div`
-  margin-top: 17%;
-  margin-left: -11%;
+const Title = styled.div`
   color: #000;
-  font-size: 13px;
+  font-size: 14px;
   font-style: normal;
-  font-weight: 900;
+  font-weight: 500;
   line-height: normal;
+  margin-top: 43px;
+
+  text-align: left;
+  width: 154px;
 `;
+
+const BottomBar = styled.footer`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 60px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  @media (hover: hover) {
+    width: 390px;
+    margin: 0 auto;
+  }
+  background: white;
+`;
+
+const Menu = styled.div`
+  width: 30px;
+  cursor: pointer;
+`;
+
+const Search = styled.div`
+  width: 30px;
+  cursor: pointer;
+`;
+
+const Home = styled.div`
+  width: 30px;
+  cursor: pointer;
+`;
+
+const My = styled.div`
+  width: 30px;
+  cursor: pointer;
+`;
+
 const Prevideopage = () => {
   const navigate = useNavigate();
-  const navigateToFirstpage = () => {
-    navigate("/");
+  const navigateToBack = () => {
+    window.history.back();
   };
 
+  const goMenu = () => {
+    navigate("/Category");
+  };
+  const goSearch = () => {
+    navigate("/Main");
+  };
+  const goMain = () => {
+    navigate("/Main");
+  };
+  const goMyPage = () => {
+    navigate("/MypageMain");
+  };
   return (
     <Container>
       <BodyWrapper>
         <Topbar>
-          <Back>
+          <Back onClick={navigateToBack}>
             <img
-              src={`${process.env.PUBLIC_URL}/images/backbutton.png`}
+              src={`${process.env.PUBLIC_URL}/images/left.png`}
               alt="back"
-              onClick={() => navigate(-1)}
+              width="12px"
             />
           </Back>
-          <Toplogo>
+          <Logo>
             <img
-              src={`${process.env.PUBLIC_URL}/images/toplogo.png`}
-              alt="toplogo"
+              src={`${process.env.PUBLIC_URL}/images/로고3.png`}
+              alt="logo"
+              width="90px"
+              onClick={goMain}
             />
-          </Toplogo>
+          </Logo>
+          <Video></Video>
         </Topbar>
+
         <Body>
-          <WhiteBox>
-            <Video>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videoimg.png`}
-                alt="videoimg"
-              />
-            </Video>
-            <Videologo>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videologo.png`}
-                alt="videologo"
-              />
-            </Videologo>
-            <VideoText>회원가입 로그인 시연 영상</VideoText>
-          </WhiteBox>
-          <WhiteBox>
-            <Video>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videoimg.png`}
-                alt="videoimg"
-              />
-            </Video>
-            <Videologo>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videologo.png`}
-                alt="videologo"
-              />
-            </Videologo>
-            <VideoText>회원가입 로그인 시연 영상</VideoText>
-          </WhiteBox>
-          <WhiteBox>
-            <Video>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videoimg.png`}
-                alt="videoimg"
-              />
-            </Video>
-            <Videologo>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videologo.png`}
-                alt="videologo"
-              />
-            </Videologo>
-            <VideoText>회원가입 로그인 시연 영상</VideoText>
-          </WhiteBox>
-          <WhiteBox>
-            <Video>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videoimg.png`}
-                alt="videoimg"
-              />
-            </Video>
-            <Videologo>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videologo.png`}
-                alt="videologo"
-              />
-            </Videologo>
-            <VideoText>회원가입 로그인 시연 영상</VideoText>
-          </WhiteBox>
-          <WhiteBox>
-            <Video>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videoimg.png`}
-                alt="videoimg"
-              />
-            </Video>
-            <Videologo>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videologo.png`}
-                alt="videologo"
-              />
-            </Videologo>
-            <VideoText>회원가입 로그인 시연 영상</VideoText>
-          </WhiteBox>
-          <WhiteBox>
-            <Video>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videoimg.png`}
-                alt="videoimg"
-              />
-            </Video>
-            <Videologo>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videologo.png`}
-                alt="videologo"
-              />
-            </Videologo>
-            <VideoText>회원가입 로그인 시연 영상</VideoText>
-          </WhiteBox>
-          <WhiteBox>
-            <Video>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videoimg.png`}
-                alt="videoimg"
-              />
-            </Video>
-            <Videologo>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/videologo.png`}
-                alt="videologo"
-              />
-            </Videologo>
-            <VideoText>회원가입 로그인 시연 영상</VideoText>
-          </WhiteBox>
+          <List>
+            <WhiteBox>
+              <DemoVideo>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  width="150px"
+                  height="90px"
+                />
+              </DemoVideo>
+              <Wrapper>
+                <DemoLogo>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/로고3.png`}
+                    width="44px"
+                    height="25.283px"
+                  />
+                </DemoLogo>
+                <Title>회원가입-로그인 시연 영상</Title>
+              </Wrapper>
+            </WhiteBox>
+
+            <WhiteBox>
+              <DemoVideo>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  width="150px"
+                  height="90px"
+                />
+              </DemoVideo>
+              <Wrapper>
+                <DemoLogo>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/로고3.png`}
+                    width="44px"
+                    height="25.283px"
+                  />
+                </DemoLogo>
+                <Title>아이디 찾기 시연 영상</Title>
+              </Wrapper>
+            </WhiteBox>
+
+            <WhiteBox>
+              <DemoVideo>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  width="150px"
+                  height="90px"
+                />
+              </DemoVideo>
+              <Wrapper>
+                <DemoLogo>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/로고3.png`}
+                    width="44px"
+                    height="25.283px"
+                  />
+                </DemoLogo>
+                <Title>
+                  홈 화면-상품선택-결제<br></br>시연 영상{" "}
+                </Title>
+              </Wrapper>
+            </WhiteBox>
+
+            <WhiteBox>
+              <DemoVideo>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  width="150px"
+                  height="90px"
+                />
+              </DemoVideo>
+              <Wrapper>
+                <DemoLogo>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/로고3.png`}
+                    width="44px"
+                    height="25.283px"
+                  />
+                </DemoLogo>
+                <Title>간편 카드결제 시연 영상 </Title>
+              </Wrapper>
+            </WhiteBox>
+
+            <WhiteBox>
+              <DemoVideo>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  width="150px"
+                  height="90px"
+                />
+              </DemoVideo>
+              <Wrapper>
+                <DemoLogo>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/로고3.png`}
+                    width="44px"
+                    height="25.283px"
+                  />
+                </DemoLogo>
+                <Title>일반 카드결제 시연 영상 </Title>
+              </Wrapper>
+            </WhiteBox>
+            <WhiteBox>
+              <DemoVideo>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  width="150px"
+                  height="90px"
+                />
+              </DemoVideo>
+              <Wrapper>
+                <DemoLogo>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/로고3.png`}
+                    width="44px"
+                    height="25.283px"
+                  />
+                </DemoLogo>
+                <Title>가상카드 충전 시연 영상 </Title>
+              </Wrapper>
+            </WhiteBox>
+
+            <WhiteBox>
+              <DemoVideo>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/videoSample.png`}
+                  width="150px"
+                  height="90px"
+                />
+              </DemoVideo>
+              <Wrapper>
+                <DemoLogo>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/로고3.png`}
+                    width="44px"
+                    height="25.283px"
+                  />
+                </DemoLogo>
+                <Title>
+                  마이페이지-결제내역<br></br>시연영상{" "}
+                </Title>
+              </Wrapper>
+            </WhiteBox>
+          </List>
         </Body>
       </BodyWrapper>
     </Container>
   );
 };
+
 export default Prevideopage;

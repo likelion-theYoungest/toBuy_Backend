@@ -48,7 +48,11 @@ const Back = styled.div`
 
 const Logo = styled.div`
   cursor: pointer;
-  margin: auto;
+`;
+
+const Video = styled.div`
+  cursor: pointer;
+  width: 30px;
 `;
 
 const Body = styled.div`
@@ -82,6 +86,10 @@ const Wrapper = styled.div`
   margin-left: 10px;
 `;
 const DemoVideo = styled.div``;
+const DemoVideo2 = styled.div`
+  margin-left: -70px;
+`;
+
 const DemoLogo = styled.div`
   position: absolute;
   top: 14px;
@@ -96,6 +104,7 @@ const Title = styled.div`
   margin-top: 43px;
 
   text-align: left;
+  width: 154px;
 `;
 
 const BottomBar = styled.footer`
@@ -110,6 +119,7 @@ const BottomBar = styled.footer`
     width: 390px;
     margin: 0 auto;
   }
+  background: white;
 `;
 
 const Menu = styled.div`
@@ -169,6 +179,7 @@ const PlayVideo = () => {
               onClick={goMain}
             />
           </Logo>
+          <Video></Video>
         </Topbar>
 
         <Body>
@@ -209,9 +220,7 @@ const PlayVideo = () => {
                     height="25.283px"
                   />
                 </DemoLogo>
-                <Title>
-                  아이디 / 비밀번호 찾기<br></br>시연 영상
-                </Title>
+                <Title>아이디 찾기 시연 영상</Title>
               </Wrapper>
             </WhiteBox>
 

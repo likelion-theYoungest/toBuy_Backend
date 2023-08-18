@@ -105,7 +105,7 @@ const Logintext = styled.div`
 
 const Box3 = styled.div`
   display: inline-flex;
-  padding: 18px 28px 18px 40px;
+  padding: 13px 30px 18px 45px;
   justify-content: center;
   align-items: center;
   margin-top: 20px;

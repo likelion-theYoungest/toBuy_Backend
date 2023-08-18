@@ -127,6 +127,10 @@ const InputSearch = styled.input`
   opacity: 0.8; /* 인풋을 조금 투/명하게 설정 */
   //   color: white; /* 글자색 설정 */
   caret-color: white; /* 커서 색상 설정 */
+  &:focus {
+    outline: none;
+    border: none;
+  }
 `;
 
 const Gra = styled.div`
@@ -511,6 +515,7 @@ const Main = () => {
               src={`${process.env.PUBLIC_URL}/images/로고3.png`}
               alt="logo"
               width="90px"
+              onClick={goMain}
             />
           </Logo>
           <Video onClick={navigateToVideo}>

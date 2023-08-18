@@ -193,6 +193,7 @@ const Mentmint = styled.div`
 `;
 const MentBox2 = styled.div`
   height: 60px;
+  margin-top: 30%;
 `;
 const BACKEND_URL =
   "https://youngest.pythonanywhere.com" || "http://127.0.0.1:8000";

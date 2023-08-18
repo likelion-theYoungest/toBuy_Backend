@@ -185,9 +185,6 @@ const Complete = () => {
   const navigateToBack = () => {
     window.history.back();
   };
-  const navigateToVideo = () => {
-    navigate("/PlayVideo");
-  };
 
   const goMenu = () => {
     navigate("/Category");
@@ -201,17 +198,17 @@ const Complete = () => {
   const goMyPage = () => {
     navigate("/MypageMain");
   };
-
+  const goPlayvideo = () => {
+    navigate("/PlayVideo");
+  };
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const productName = queryParams.get("productName");
   const unitPrice = queryParams.get("unitPrice");
   const quantity = queryParams.get("quantity");
   const imagePath = queryParams.get("imagePath");
-
   // 총 가격 계산
   const totalPrice = unitPrice * quantity;
-
   const BACKEND_URL =
     "https://youngest.pythonanywhere.com" || "http://127.0.0.1:8000";
 
@@ -231,9 +228,10 @@ const Complete = () => {
               src={`${process.env.PUBLIC_URL}/images/로고3.png`}
               alt="logo"
               width="90px"
+              onClick={goMain}
             />
           </Logo>
-          <Video onClick={navigateToVideo}>
+          <Video onClick={goPlayvideo}>
             <img
               src={`${process.env.PUBLIC_URL}/images/carousel-video.png`}
               width="30px"
@@ -241,7 +239,6 @@ const Complete = () => {
             />
           </Video>
         </Topbar>
-
         <Logo1>
           <img
             src={`${process.env.PUBLIC_URL}/images/로고3.png`}
@@ -255,7 +252,7 @@ const Complete = () => {
               src={`${BACKEND_URL}${imagePath}`}
               alt={productName}
               width="70px"
-            />
+            ></img>
           </ProductImg>
           <ProductInfoWrapper>
             <ProductName>{productName}</ProductName>

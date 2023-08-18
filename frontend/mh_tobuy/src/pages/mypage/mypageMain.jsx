@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -440,8 +440,8 @@ const QuantityWrapper = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  margin: 0 auto;
-  margin-top: 8%;
+  display: flex;
+  align-items: center;
 `;
 const Whole = styled.span``;
 const Quantity = styled.span``;
@@ -471,8 +471,9 @@ const PriceWrapper = styled.div`
   line-height: normal;
   text-align: left;
   margin-left: auto;
-  margin: 0 auto;
-  margin-top: 10%;
+  margin: auto;
+  display: flex;
+  align-items: center;
 `;
 
 const TypeWrapper = styled.div`
@@ -570,7 +571,6 @@ const CmLogo = styled.div`
   margin-top: -0%;
   flex-shrink: 0;
 `;
-
 const ModalView = styled.div.attrs((props) => ({
   role: "dialog",
 }))`
@@ -667,6 +667,18 @@ const MypageMain = () => {
   };
   const navigateToMain = () => {
     navigate("/Main");
+  };
+
+  const navigateToPayHistory = (purchase) => {
+    const queryParams = new URLSearchParams();
+    queryParams.append("productName", purchase.name);
+    queryParams.append("quantity", purchase.count);
+    queryParams.append("unitPrice", purchase.price);
+    queryParams.append("totalPrice", purchase.total);
+    queryParams.append("imagePath", purchase.image);
+
+    // URL 쿼리 파라미터로 데이터를 전달하면서 페이지 이동
+    navigate(`/PayHistory?${queryParams.toString()}`);
   };
 
   const BACKEND_URL =
@@ -813,9 +825,9 @@ const MypageMain = () => {
                   <Ucvc>{card.cvc}</Ucvc>
                 </CVCWrapper>
                 <DateWrapper>
-                  <Date>유효기간 년/월</Date>
+                  <Date>유효기간</Date>
                   <br />
-                  <Udate>{card.validDate}</Udate>
+                  <Udate>08/24</Udate>
                 </DateWrapper>
                 <CardBalanceWrapper>
                   <Balance>카드 잔액</Balance>
@@ -841,7 +853,7 @@ const MypageMain = () => {
             <PayContent>
               {userData.purchases.map((purchase, index) => (
                 <WhiteBox key={index}>
-                  <PayWrapper>
+                  <PayWrapper onClick={() => navigateToPayHistory(purchase)}>
                     <PayImg>
                       <img
                         src={`${BACKEND_URL}${purchase.image}`}
@@ -853,7 +865,7 @@ const MypageMain = () => {
                     <PayinfoWrapper>
                       <ProductName>{purchase.name}</ProductName>
                       <QuantityWrapper>
-                        <Whole>총 </Whole>
+                        <Whole></Whole>
                         <Quantity>{purchase.count}</Quantity>
                         <Count> 개</Count>
                       </QuantityWrapper>
