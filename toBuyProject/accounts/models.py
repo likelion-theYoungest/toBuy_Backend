@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+
 class UserManager(BaseUserManager):
     def create_user(self, name, phone, email, password=None, register=False):
         if not name:
@@ -8,6 +9,11 @@ class UserManager(BaseUserManager):
             raise ValueError('must have user phone')
         if not email:
             raise ValueError('must have user name')
+        # try:
+        #     validate_email(email)  # Validate email format
+        # except ValidationError:
+        #     raise ValueError('invalid email format')
+        
         user = self.model(
             name = name,
             phone = phone,
@@ -24,7 +30,7 @@ class UserManager(BaseUserManager):
             email = email,
         )
         user.set_password(password)
-        # user.is_admin = True
+        user.is_admin = True
         user.save(using=self._db)
         return user
 
@@ -36,7 +42,7 @@ class User(AbstractBaseUser):
     #password_check = models.CharField(default='', max_length=100, null=False, blank=False)
     # User 모델의 필수 field
     is_active = models.BooleanField(default=True)   
-    is_admin = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
     # 헬퍼 클래스 사용
     objects = UserManager()
     # 사용자의 username field는 email로 설정
